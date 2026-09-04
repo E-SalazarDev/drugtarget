@@ -27,11 +27,7 @@ class Protein:
         return (True, "Secuencia de aminoácidos válida")
           
                 
-            
-
-
-
-
+        
 try:
     p  = Protein(sequence="MENFQKVEK", name="Test Kinase", uniprot_id="P12345")
     print(p.validate_structure())
