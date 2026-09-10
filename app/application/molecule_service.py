@@ -36,7 +36,7 @@ class ProteinService:
         if not is_valid:
             raise ValueError(message)
         
-        protein_model = ProteinModel(sequence= protein.sequence, name= protein.name, uniprot_id=protein.uniprot_id)
+        protein_model = ProteinModel(sequence= protein.sequence.upper(), name= protein.name, uniprot_id=protein.uniprot_id)
         saved = await self.repository.add(protein_model)
         
         return  ProteinResponse(id= str(saved.id), sequence= saved.sequence, name= saved.name, uniprot_id= saved.uniprot_id )
