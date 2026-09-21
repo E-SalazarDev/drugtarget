@@ -61,3 +61,4 @@ uvicorn==0.52.4
 watchfiles==1.2.0
 wcwidth==0.8.3
 websockets==17.1
+-e .
