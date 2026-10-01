@@ -1,0 +1,227 @@
+/*
+ * DrugTarget — Design Tokens
+ * Dark Mode
+ *
+ * Filosofía visual:
+ * científico · tecnológico · elegante · preciso
+ *
+ * La interfaz NO utiliza negro puro.
+ * Los acentos fuertes están reservados para información
+ * científica y estados, no para decorar toda la UI.
+ */
+
+:root {
+  /* =========================================================
+     TIPOGRAFÍA
+     ========================================================= */
+
+  --font-sans:
+    "Inter",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  --font-mono:
+    "JetBrains Mono",
+    ui-monospace,
+    "SFMono-Regular",
+    Menlo,
+    Monaco,
+    Consolas,
+    monospace;
+
+
+  /* =========================================================
+     BACKGROUND
+     ========================================================= */
+
+  --color-background: #071014;
+  --color-background-secondary: #0a171b;
+
+  --color-surface: #0d1c21;
+  --color-surface-elevated: #12262c;
+  --color-surface-hover: #173038;
+
+
+  /* =========================================================
+     BORDERS
+     ========================================================= */
+
+  --color-border-subtle: rgba(126, 220, 202, 0.07);
+  --color-border: rgba(126, 220, 202, 0.11);
+  --color-border-strong: rgba(126, 220, 202, 0.18);
+
+
+  /* =========================================================
+     TEXTO
+     ========================================================= */
+
+  --color-text: #edf8f6;
+  --color-text-secondary: #b4c9c8;
+  --color-text-muted: #76918f;
+  --color-text-subtle: #506765;
+
+  --color-text-inverse: #06100f;
+
+
+  /* =========================================================
+     BRAND — TEAL / JADE
+     ========================================================= */
+
+  --color-accent: #22c7a0;
+  --color-accent-hover: #43d9b4;
+  --color-accent-active: #18ad8a;
+
+  --color-accent-soft: rgba(34, 199, 160, 0.10);
+  --color-accent-medium: rgba(34, 199, 160, 0.16);
+  --color-accent-glow: rgba(34, 199, 160, 0.24);
+
+
+  /* =========================================================
+     AZUL PETRÓLEO
+     ========================================================= */
+
+  --color-teal-deep: #075463;
+  --color-teal: #087b88;
+  --color-teal-soft: rgba(8, 123, 136, 0.16);
+
+
+  /* =========================================================
+     HIGHLIGHT
+     ========================================================= */
+
+  --color-highlight: #9ae8d5;
+  --color-highlight-soft: rgba(154, 232, 213, 0.10);
+
+
+  /* =========================================================
+     SCIENTIFIC COLORS
+     ========================================================= */
+
+  --color-protein: #6ea8c7;
+  --color-molecule: #c69a61;
+  --color-pocket: #22c7a0;
+  --color-interaction: #9ae8d5;
+
+
+  /* =========================================================
+     ESTADOS
+     ========================================================= */
+
+  --color-success: #22c7a0;
+  --color-warning: #c69a61;
+  --color-danger: #d97979;
+  --color-info: #6ea8c7;
+
+
+  /* =========================================================
+     SOMBRAS
+     ========================================================= */
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.22);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.24);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.30);
+  --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.38);
+  --shadow-xl: 0 30px 90px rgba(0, 0, 0, 0.48);
+
+
+  /* =========================================================
+     LANDING
+     ========================================================= */
+
+  --landing-bg: var(--color-background);
+  --landing-text: var(--color-text);
+
+  --landing-accent: var(--color-accent);
+  --landing-accent-bright: var(--color-highlight);
+
+  --landing-glow-primary: rgba(8, 123, 136, 0.18);
+  --landing-glow-secondary: rgba(34, 199, 160, 0.10);
+}
+
+/* =========================================================
+   BASE GLOBAL
+   ========================================================= */
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+
+::selection {
+  background: var(--selection-background);
+  color: var(--selection-text);
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
