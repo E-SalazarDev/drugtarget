@@ -13,22 +13,22 @@ import { NavLink } from 'react-router-dom'
 const navigation = [
   {
     label: 'Resumen',
-    path: '/',
+    path: '/app',
     icon: LayoutDashboard,
   },
   {
     label: 'Moléculas',
-    path: '/molecules',
+    path: '/app/molecules',
     icon: Atom,
   },
   {
     label: 'Proteínas',
-    path: '/proteins',
+    path: '/app/proteins',
     icon: Dna,
   },
   {
     label: 'Predicciones',
-    path: '/predictions',
+    path: '/app/predictions',
     icon: BrainCircuit,
   },
 ]
@@ -69,7 +69,7 @@ function Sidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
-                end={item.path === '/'}
+                end={item.path === '/app'}
                 className={({ isActive }) =>
                   [
                     'group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200',
