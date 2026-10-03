@@ -1,85 +1,5 @@
 @import "tailwindcss";
-
-/* =========================================================
-   DRUGTARGET — DESIGN TOKENS
-   ========================================================= */
-
-:root {
-  /*
-   * Typography
-   * -------------------------------------------------------
-   * Inter       → interfaz, títulos, navegación y contenido
-   * JetBrains   → datos y elementos técnico-científicos
-   */
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular,
-    Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-
-  /*
-   * Global Dark Theme
-   * -------------------------------------------------------
-   * No usamos negro puro.
-   * La intención es crear profundidad mediante navy,
-   * carbón y azul grisáceo.
-   */
-  --color-bg: #080d14;
-  --color-bg-secondary: #0b1119;
-
-  --color-surface: #101720;
-  --color-surface-raised: #151e29;
-  --color-surface-soft: rgba(255, 255, 255, 0.035);
-
-  --color-text: #edf3f8;
-  --color-text-secondary: #a8b5c3;
-  --color-text-muted: #687789;
-  --color-text-subtle: #475565;
-
-  --color-border: rgba(220, 231, 243, 0.08);
-  --color-border-strong: rgba(220, 231, 243, 0.14);
-
-  /*
-   * Scientific accent
-   *
-   * No cyan neon.
-   * No purple neon.
-   *
-   * Es un azul grisáceo / índigo mineral,
-   * más sobrio y científico.
-   */
-  --color-accent: #8da8c5;
-  --color-accent-bright: #b8cbe0;
-  --color-accent-soft: rgba(141, 168, 197, 0.12);
-
-  /*
-   * Landing-specific tokens
-   */
-  --landing-bg: #080d14;
-  --landing-text: #edf3f8;
-  --landing-accent: #8da8c5;
-  --landing-accent-bright: #b8cbe0;
-
-  /*
-   * Effects
-   */
-  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.22);
-  --shadow-elevated: 0 30px 90px rgba(0, 0, 0, 0.32);
-
-  /*
-   * Selection
-   */
-  --selection-bg: rgba(141, 168, 197, 0.24);
-  --selection-text: #f4f8fb;
-
-  /*
-   * Scrollbar
-   */
-  --scrollbar-track: #080d14;
-  --scrollbar-thumb: #202b38;
-  --scrollbar-thumb-hover: #2d3b4b;
-}
-
+@import "./styles/tokens.css";
 
 /* =========================================================
    BASE
@@ -92,8 +12,8 @@
 html {
   min-width: 320px;
   min-height: 100%;
-  background: var(--color-bg);
-  color-scheme: dark;
+  background: var(--bg-page);
+  color: var(--text-primary);
   scroll-behavior: smooth;
 }
 
@@ -102,22 +22,17 @@ body {
   min-width: 320px;
   min-height: 100vh;
 
-  background: var(--color-bg);
-  color: var(--color-text);
-
+  background: var(--bg-page);
+  color: var(--text-primary);
   font-family: var(--font-sans);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
-
-
-/* =========================================================
-   TYPOGRAPHY
-   ========================================================= */
 
 button,
 a,
@@ -131,15 +46,9 @@ button {
   cursor: pointer;
 }
 
-
-/*
- * JetBrains Mono se reserva para información
- * técnica/científica.
- */
 .font-mono {
   font-family: var(--font-mono);
 }
-
 
 /* =========================================================
    SELECTION
@@ -149,7 +58,6 @@ button {
   background: var(--selection-bg);
   color: var(--selection-text);
 }
-
 
 /* =========================================================
    SCROLLBAR
@@ -165,16 +73,15 @@ button {
 
 ::-webkit-scrollbar-thumb {
   background: var(--scrollbar-thumb);
-  border-radius: 999px;
+  border-radius: var(--radius-full);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
 
-
 /* =========================================================
-   ACCESSIBILITY
+   FOCUS
    ========================================================= */
 
 button:focus-visible,
@@ -182,10 +89,9 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--accent-cyan);
   outline-offset: 3px;
 }
-
 
 /* =========================================================
    REDUCED MOTION
