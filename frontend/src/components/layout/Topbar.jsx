@@ -1,52 +1,66 @@
-import { Bell, CircleHelp } from 'lucide-react'
+import { Link } from "react-router-dom";
+import { Beaker } from "lucide-react";
+import NavLinks from "./NavLinks";
+import ThemeToggle from "./ThemeToggle";
+import { useTheme } from "../../providers/ThemeProvider";
 
 function Topbar() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
+
   return (
-    <header className="sticky top-0 z-30 flex h-19 items-center justify-between border-b border-[#202833] bg-[#080B10]/90 px-8 backdrop-blur-xl">
-      <div>
-        <p className="text-xs text-slate-600">
-          Plataforma de investigación
-        </p>
+   <header
+  className="sticky top-0 z-30 flex h-16 items-center justify-between px-8"
+  style={{
+    background: isDark ? "var(--bg-elevated)" : "var(--bg-elevated)",
+    borderBottom: "1px solid var(--border-medium)",
+    boxShadow: "var(--shadow-header)",
+  }}
+>
+      {/* Logo */}
+      <Link
+        to="/app"
+        className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-90"
+      >
+        <div
+          className="flex h-8 w-8 items-center justify-center rounded-lg"
+          style={{
+            background: isDark
+              ? "rgba(34, 211, 230, 0.10)"
+              : "rgba(10, 124, 133, 0.08)",
+            border: `1px solid ${
+              isDark
+                ? "rgba(34, 211, 230, 0.20)"
+                : "rgba(10, 124, 133, 0.18)"
+            }`,
+          }}
+        >
+          <Beaker
+            className="h-4 w-4"
+            strokeWidth={2.2}
+            style={{ color: isDark ? "#22D3E6" : "#0A7C85" }}
+          />
+        </div>
+
+        <span
+          className="text-[14px] font-bold tracking-[-0.01em]"
+          style={{ color: isDark ? "#FFFFFF" : "#0A0F24" }}
+        >
+          DrugTarget
+        </span>
+      </Link>
+
+      {/* Nav central */}
+      <div className="absolute left-1/2 -translate-x-1/2">
+        <NavLinks />
       </div>
 
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          aria-label="Ayuda"
-          className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-white/4 hover:text-slate-300"
-        >
-          <CircleHelp className="h-4.5 w-4.5" strokeWidth={1.7} />
-        </button>
-
-        <button
-          type="button"
-          aria-label="Notificaciones"
-          className="relative flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-white/4 hover:text-slate-300"
-        >
-          <Bell className="h-4.5 w-4.5" strokeWidth={1.7} />
-
-          <span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-cyan-300" />
-        </button>
-
-        <div className="ml-2 h-7 w-px bg-[#202833]" />
-
-        <div className="ml-2 flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyan-400/20 to-violet-400/20 text-xs font-medium text-cyan-200">
-            E
-          </div>
-
-          <div className="hidden sm:block">
-            <p className="text-xs font-medium text-slate-300">
-              Eduardo
-            </p>
-            <p className="text-[10px] text-slate-600">
-              Investigador
-            </p>
-          </div>
-        </div>
+      {/* Toggle a la derecha con aire */}
+      <div className="flex shrink-0 items-center">
+        <ThemeToggle />
       </div>
     </header>
-  )
+  );
 }
 
-export default Topbar
+export default Topbar;
