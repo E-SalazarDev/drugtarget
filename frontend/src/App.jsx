@@ -1,9 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import AppShell from "./components/layout/AppShell";
-
 import LandingPage from "./features/landing/pages/LandingPage";
-
 import DashboardPage from "./features/dashboard/pages/DashboardPage";
 
 import MoleculesPage from "./features/molecules/pages/MoleculesPage";
@@ -24,18 +22,17 @@ function App() {
       <Route path="/app" element={<AppShell />}>
         <Route index element={<DashboardPage />} />
 
-        <Route path="molecules">
-          <Route index element={<MoleculesPage />} />
-          <Route path="new" element={<NewMoleculePage />} />
-          <Route path=":id" element={<MoleculeDetailPage />} />
-        </Route>
+        {/* MOLÉCULAS — rutas planas, sin anidar */}
+        <Route path="molecules" element={<MoleculesPage />} />
+        <Route path="molecules/new" element={<NewMoleculePage />} />
+        <Route path="molecules/:id" element={<MoleculeDetailPage />} />
 
-        <Route path="proteins">
-          <Route index element={<ProteinsPage />} />
-          <Route path="new" element={<NewProteinPage />} />
-          <Route path=":id" element={<ProteinDetailPage />} />
-        </Route>
+        {/* PROTEÍNAS — rutas planas */}
+        <Route path="proteins" element={<ProteinsPage />} />
+        <Route path="proteins/new" element={<NewProteinPage />} />
+        <Route path="proteins/:id" element={<ProteinDetailPage />} />
 
+        {/* PREDICCIONES */}
         <Route path="predictions" element={<PredictionsPage />} />
       </Route>
 

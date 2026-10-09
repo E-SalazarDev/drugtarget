@@ -5,7 +5,7 @@ import { Environment, Float } from "@react-three/drei";
 import Hero3DScene from "./Hero3DScene";
 import CameraRig from "./CameraRig";
 
-/** Variante full-bleed opcional */
+
 export default function LandingScene() {
   return (
     <div className="absolute inset-0 -z-0">
