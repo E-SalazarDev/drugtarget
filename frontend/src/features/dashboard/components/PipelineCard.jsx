@@ -1,16 +1,15 @@
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { Atom, Dna, BrainCircuit, ArrowRight } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
+
+const cardBg = "var(--card-bg)";
+const cardBorder = "var(--card-border)";
 
 export default function PipelineCard({
   moleculesCount = 68,
   proteinsCount = 378,
   predictionsReady = false,
 }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   const STEPS = [
     {
       n: "01",
@@ -20,13 +19,9 @@ export default function PipelineCard({
       countLabel: "registradas",
       icon: Atom,
       href: "/app/molecules",
-      color: isDark ? "#22D3E6" : "#0A7C85",
-      colorSoft: isDark
-        ? "rgba(34, 211, 230, 0.10)"
-        : "rgba(10, 124, 133, 0.08)",
-      colorBorder: isDark
-        ? "rgba(34, 211, 230, 0.20)"
-        : "rgba(10, 124, 133, 0.20)",
+      color: "var(--chip-text)",
+      colorSoft: "var(--chip-lilac-bg)",
+      colorBorder: "transparent",
     },
     {
       n: "02",
@@ -36,13 +31,9 @@ export default function PipelineCard({
       countLabel: "disponibles",
       icon: Dna,
       href: "/app/proteins",
-      color: isDark ? "#A78BFA" : "#7C3AED",
-      colorSoft: isDark
-        ? "rgba(167, 139, 250, 0.10)"
-        : "rgba(124, 58, 237, 0.08)",
-      colorBorder: isDark
-        ? "rgba(167, 139, 250, 0.20)"
-        : "rgba(124, 58, 237, 0.20)",
+      color: "var(--chip-text)",
+      colorSoft: "var(--chip-pink-bg)",
+      colorBorder: "transparent",
     },
     {
       n: "03",
@@ -54,37 +45,13 @@ export default function PipelineCard({
       countLabel: predictionsReady ? "activo" : "pendiente",
       icon: BrainCircuit,
       href: "/app/predictions",
-      color: predictionsReady
-        ? isDark
-          ? "#4ADE80"
-          : "#0A8F4A"
-        : isDark
-        ? "#FBBF24"
-        : "#B45309",
+      color: "var(--chip-text)",
       colorSoft: predictionsReady
-        ? isDark
-          ? "rgba(74, 222, 128, 0.10)"
-          : "rgba(10, 143, 74, 0.08)"
-        : isDark
-        ? "rgba(251, 191, 36, 0.10)"
-        : "rgba(180, 83, 9, 0.08)",
-      colorBorder: predictionsReady
-        ? isDark
-          ? "rgba(74, 222, 128, 0.20)"
-          : "rgba(10, 143, 74, 0.20)"
-        : isDark
-        ? "rgba(251, 191, 36, 0.20)"
-        : "rgba(180, 83, 9, 0.20)",
+        ? "var(--chip-lime-bg)"
+        : "var(--chip-amber-bg)",
+      colorBorder: "transparent",
     },
   ];
-
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
-  const cardBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.08)";
-  const arrowColor = isDark
-    ? "rgba(255, 255, 255, 0.10)"
-    : "rgba(14, 19, 48, 0.10)";
 
   return (
     <motion.div
@@ -94,7 +61,7 @@ export default function PipelineCard({
     >
       <h2
         className="mb-3 text-[11px] font-bold uppercase tracking-[0.14em]"
-        style={{ color: isDark ? "#9CA3B4" : "#6B7285" }}
+        style={{ color: "var(--text-secondary)" }}
       >
         Pipeline del producto
       </h2>
@@ -112,23 +79,22 @@ export default function PipelineCard({
                 style={{
                   background: cardBg,
                   border: `1px solid ${cardBorder}`,
+                  boxShadow: "var(--shadow-sm)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = step.colorBorder;
-                  e.currentTarget.style.background = isDark
-                    ? "rgba(255, 255, 255, 0.02)"
-                    : "rgba(14, 19, 48, 0.01)";
+                  e.currentTarget.style.borderColor = "var(--border-strong)";
+                  e.currentTarget.style.background = "var(--surface-hover)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = cardBorder;
-                  e.currentTarget.style.background = cardBg;
+                  e.currentTarget.style.borderColor = "var(--card-border)";
+                  e.currentTarget.style.background = "var(--card-bg)";
                 }}
               >
                 {/* Header: número + ícono */}
                 <div className="flex items-start justify-between">
                   <span
                     className="font-mono text-[11px] font-bold tabular-nums tracking-wider"
-                    style={{ color: step.color }}
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     PASO {step.n}
                   </span>
@@ -152,13 +118,13 @@ export default function PipelineCard({
                 <div>
                   <h3
                     className="text-[15px] font-bold tracking-[-0.01em]"
-                    style={{ color: isDark ? "#FFFFFF" : "#0A0F24" }}
+                    style={{ color: "var(--text-primary)" }}
                   >
                     {step.label}
                   </h3>
                   <p
                     className="mt-1 text-[11.5px] leading-relaxed"
-                    style={{ color: isDark ? "#98A0AB" : "#5A6480" }}
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     {step.description}
                   </p>
@@ -167,21 +133,17 @@ export default function PipelineCard({
                 {/* Métrica */}
                 <div
                   className="mt-1 flex items-baseline justify-between border-t pt-3"
-                  style={{
-                    borderColor: isDark
-                      ? "rgba(255, 255, 255, 0.06)"
-                      : "rgba(14, 19, 48, 0.06)",
-                  }}
+                  style={{ borderColor: "var(--row-border)" }}
                 >
                   <span
                     className="font-mono text-[18px] font-bold tabular-nums leading-none"
-                    style={{ color: isDark ? "#FFFFFF" : "#0A0F24" }}
+                    style={{ color: "var(--text-primary)" }}
                   >
                     {step.count}
                   </span>
                   <span
                     className="text-[10.5px] font-medium uppercase tracking-wider"
-                    style={{ color: isDark ? "#7A8494" : "#8A93A4" }}
+                    style={{ color: "var(--text-tertiary)" }}
                   >
                     {step.countLabel}
                   </span>
@@ -194,7 +156,7 @@ export default function PipelineCard({
                   <ArrowRight
                     size={16}
                     strokeWidth={2.2}
-                    style={{ color: arrowColor }}
+                    style={{ color: "var(--text-quaternary)" }}
                   />
                 </div>
               )}
