@@ -1,18 +1,36 @@
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
 import { Atom, Dna, ArrowRight } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
 
 const SOFT_EASE = [0.22, 1, 0.36, 1];
+
+const accentStyles = {
+  cyan: {
+    color: "var(--chip-text)",
+    soft: "var(--chip-lilac-bg)",
+    border: "transparent",
+  },
+  violet: {
+    color: "var(--chip-text)",
+    soft: "var(--chip-pink-bg)",
+    border: "transparent",
+  },
+};
+
+const nameColor = "var(--text-primary)";
+const monoColor = "var(--text-mono)";
+const labelColor = "var(--text-secondary)";
+
+const cardBg = "var(--card-bg)";
+const cardBorder = "var(--card-border)";
+const rowBorder = "var(--row-border)";
+const rowHover = "var(--row-hover)";
 
 export default function RecentActivity({
   molecules = [],
   proteins = [],
   loading = false,
 }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
   const items = [
     ...molecules.slice(0, 3).map((m, i) => ({
       id: `mol-${m.id}`,
@@ -40,45 +58,14 @@ export default function RecentActivity({
     })),
   ].slice(0, 5);
 
-  // Colores más saturados
-  const accentStyles = {
-    cyan: {
-      color: isDark ? "#22D3E6" : "#0A7C85",
-      soft: isDark
-        ? "rgba(34, 211, 230, 0.12)"
-        : "rgba(10, 124, 133, 0.10)",
-      border: isDark
-        ? "rgba(34, 211, 230, 0.25)"
-        : "rgba(10, 124, 133, 0.25)",
-    },
-    violet: {
-      color: isDark ? "#A78BFA" : "#7C3AED",
-      soft: isDark
-        ? "rgba(167, 139, 250, 0.12)"
-        : "rgba(124, 58, 237, 0.10)",
-      border: isDark
-        ? "rgba(167, 139, 250, 0.25)"
-        : "rgba(124, 58, 237, 0.25)",
-    },
-  };
-
-  const nameColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const monoColor = isDark ? "#B8BFCE" : "#2E3550";
-  const labelColor = isDark ? "#9CA3B4" : "#4A5170";
-
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
-  const cardBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.08)";
-  const rowBorder = isDark
-    ? "rgba(255, 255, 255, 0.06)"
-    : "rgba(14, 19, 48, 0.06)";
-  const rowHover = isDark ? "rgba(255, 255, 255, 0.03)" : "#FAFBFC";
-
   return (
     <div
       className="overflow-hidden rounded-2xl"
-      style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+      style={{
+        background: cardBg,
+        border: `1px solid ${cardBorder}`,
+        boxShadow: "var(--shadow-sm)",
+      }}
     >
       {/* Header */}
       <div
@@ -89,13 +76,13 @@ export default function RecentActivity({
           <span className="relative flex h-1.5 w-1.5">
             <motion.span
               className="absolute inline-flex h-full w-full rounded-full"
-              style={{ background: isDark ? "#22D3E6" : "#0A7C85" }}
+              style={{ background: "var(--accent-cyan)" }}
               animate={{ opacity: [0.4, 0, 0.4], scale: [1, 2.5, 1] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             />
             <span
               className="relative inline-flex h-1.5 w-1.5 rounded-full"
-              style={{ background: isDark ? "#22D3E6" : "#0A7C85" }}
+              style={{ background: "var(--accent-cyan)" }}
             />
           </span>
           <h2
@@ -108,8 +95,12 @@ export default function RecentActivity({
 
         <Link
           to="/app/molecules"
-          className="group flex items-center gap-1.5 text-[12.5px] font-semibold transition-opacity hover:opacity-80"
-          style={{ color: "var(--accent)" }}
+          className="group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-[var(--hover-overlay)]"
+          style={{
+            color: "var(--link)",
+            border: "1px solid var(--icon-box-border)",
+            background: "var(--icon-box-bg)",
+          }}
         >
           Ver todo
           <ArrowRight
@@ -122,19 +113,13 @@ export default function RecentActivity({
 
       {loading ? (
         <div className="p-6">
-          <p
-            className="text-[13px]"
-            style={{ color: labelColor }}
-          >
+          <p className="text-[13px]" style={{ color: labelColor }}>
             Cargando…
           </p>
         </div>
       ) : items.length === 0 ? (
         <div className="p-6 text-center">
-          <p
-            className="text-[13px]"
-            style={{ color: labelColor }}
-          >
+          <p className="text-[13px]" style={{ color: labelColor }}>
             Todavía no hay actividad registrada.
           </p>
         </div>
@@ -174,7 +159,7 @@ export default function RecentActivity({
                     style={{
                       width: 2.5,
                       height: "55%",
-                      background: style.color,
+                      background: style.soft,
                     }}
                     initial={false}
                     animate={{ opacity: 0 }}
@@ -240,10 +225,8 @@ export default function RecentActivity({
                           style={{
                             background:
                               dot < item.urgency
-                                ? style.color
-                                : isDark
-                                ? "rgba(255, 255, 255, 0.10)"
-                                : "rgba(14, 19, 48, 0.10)",
+                                ? style.soft
+                                : "var(--border-medium)",
                           }}
                         />
                       ))}
@@ -255,7 +238,7 @@ export default function RecentActivity({
                     size={13}
                     strokeWidth={2.2}
                     className="shrink-0 opacity-0 transition-opacity group-hover:opacity-100"
-                    style={{ color: style.color }}
+                    style={{ color: "var(--text-primary)" }}
                   />
                 </Link>
               </motion.li>
