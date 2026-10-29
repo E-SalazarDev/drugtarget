@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { Check } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
 
 const STEPS = [
   { label: "Cargando proteína objetivo", duration: 700 },
@@ -10,14 +9,10 @@ const STEPS = [
   { label: "Ordenando candidatos", duration: 500 },
 ];
 
-export default function PredictionLoading({ onComplete }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-  const [currentStep, setCurrentStep] = useState(0);
+const VIOLET_GRADIENT = "linear-gradient(135deg, #A48BFF 0%, #6D4AF2 100%)";
 
-  const nameColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const labelColor = isDark ? "#9CA3B4" : "#4A5170";
-  const accentCyan = isDark ? "#22D3E6" : "#0A7C85";
+export default function PredictionLoading({ onComplete }) {
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -49,61 +44,84 @@ export default function PredictionLoading({ onComplete }) {
       transition={{ duration: 0.4 }}
       className="rounded-2xl p-10 sm:p-14"
       style={{
-        background: isDark ? "#14171C" : "#FFFFFF",
-        border: `1px solid ${
-          isDark ? "rgba(255, 255, 255, 0.08)" : "rgba(14, 19, 48, 0.08)"
-        }`,
+        background: "var(--card-bg)",
+        border: "1px solid var(--card-border)",
+        boxShadow: "var(--shadow-sm)",
       }}
     >
       <div className="mx-auto max-w-md">
-        {/* Spinner circular animado */}
+        {/* Spinner:*/}
         <div className="flex justify-center">
-          <div className="relative h-16 w-16">
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{
-                border: `2px solid ${
-                  isDark
-                    ? "rgba(34, 211, 230, 0.15)"
-                    : "rgba(10, 124, 133, 0.15)"
-                }`,
-                borderTopColor: accentCyan,
-              }}
+          <div className="relative h-18 w-18">
+            <motion.svg
+              viewBox="0 0 72 72"
+              className="absolute inset-0"
               animate={{ rotate: 360 }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div
-              className="absolute inset-2 rounded-full"
-              style={{
-                border: `2px solid ${
-                  isDark
-                    ? "rgba(34, 211, 230, 0.10)"
-                    : "rgba(10, 124, 133, 0.10)"
-                }`,
-                borderBottomColor: accentCyan,
-              }}
+              transition={{ duration: 1.3, repeat: Infinity, ease: "linear" }}
+            >
+              <defs>
+                <linearGradient id="loadingArc" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#B8A6FF" />
+                  <stop offset="100%" stopColor="#6D4AF2" />
+                </linearGradient>
+              </defs>
+              <circle
+                cx="36"
+                cy="36"
+                r="31"
+                fill="none"
+                style={{ stroke: "var(--bar-track)" }}
+                strokeWidth="4"
+              />
+              <circle
+                cx="36"
+                cy="36"
+                r="31"
+                fill="none"
+                stroke="url(#loadingArc)"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeDasharray="70 125"
+              />
+            </motion.svg>
+
+            <motion.svg
+              viewBox="0 0 72 72"
+              className="absolute inset-0"
               animate={{ rotate: -360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-            />
+              transition={{ duration: 2.2, repeat: Infinity, ease: "linear" }}
+            >
+              <circle
+                cx="36"
+                cy="36"
+                r="20"
+                fill="none"
+                style={{ stroke: "var(--text-primary)" }}
+                strokeOpacity="0.7"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeDasharray="34 92"
+              />
+            </motion.svg>
           </div>
         </div>
 
         {/* Título */}
         <h2
           className="mt-8 text-center text-[20px] font-bold tracking-[-0.01em]"
-          style={{ color: nameColor }}
+          style={{ color: "var(--text-primary)" }}
         >
           Calculando ranking de afinidad
         </h2>
         <p
-          className="mt-2 text-center text-[13px]"
-          style={{ color: labelColor }}
+          className="mt-2 text-center text-[13.5px]"
+          style={{ color: "var(--text-secondary)" }}
         >
           El modelo está evaluando cada candidato…
         </p>
 
         {/* Pasos */}
-        <div className="mt-8 space-y-3">
+        <div className="mt-8 space-y-3.5">
           {STEPS.map((step, i) => {
             const isDone = i < currentStep;
             const isActive = i === currentStep;
@@ -112,23 +130,15 @@ export default function PredictionLoading({ onComplete }) {
               <div key={i} className="flex items-center gap-3">
                 {/* Indicador */}
                 <div
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-colors"
+                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-all"
                   style={{
-                    background: isDone
-                      ? isDark
-                        ? "rgba(34, 211, 230, 0.15)"
-                        : "rgba(10, 124, 133, 0.12)"
-                      : isActive
-                      ? isDark
-                        ? "rgba(34, 211, 230, 0.08)"
-                        : "rgba(10, 124, 133, 0.06)"
-                      : "transparent",
-                    border: `1px solid ${
-                      isDone || isActive
-                        ? accentCyan
-                        : isDark
-                        ? "rgba(255, 255, 255, 0.10)"
-                        : "rgba(14, 19, 48, 0.10)"
+                    background: isDone ? VIOLET_GRADIENT : "transparent",
+                    border: `${isActive ? 2 : 1}px solid ${
+                      isDone
+                        ? "transparent"
+                        : isActive
+                        ? "#8E74FF"
+                        : "var(--border-medium)"
                     }`,
                   }}
                 >
@@ -138,17 +148,13 @@ export default function PredictionLoading({ onComplete }) {
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <Check
-                        size={12}
-                        strokeWidth={3}
-                        style={{ color: accentCyan }}
-                      />
+                      <Check size={12} strokeWidth={3.4} color="#FFFFFF" />
                     </motion.div>
                   ) : isActive ? (
                     <motion.div
-                      className="h-1.5 w-1.5 rounded-full"
-                      style={{ background: accentCyan }}
-                      animate={{ opacity: [0.4, 1, 0.4] }}
+                      className="h-2 w-2 rounded-full"
+                      style={{ background: "var(--text-primary)" }}
+                      animate={{ opacity: [0.35, 1, 0.35] }}
                       transition={{
                         duration: 1.2,
                         repeat: Infinity,
@@ -158,25 +164,19 @@ export default function PredictionLoading({ onComplete }) {
                   ) : (
                     <div
                       className="h-1.5 w-1.5 rounded-full"
-                      style={{
-                        background: isDark
-                          ? "rgba(255, 255, 255, 0.20)"
-                          : "rgba(14, 19, 48, 0.20)",
-                      }}
+                      style={{ background: "var(--text-quaternary)" }}
                     />
                   )}
                 </div>
 
                 {/* Label */}
                 <span
-                  className="text-[13px] font-medium transition-colors"
+                  className="text-[13.5px] font-semibold transition-colors"
                   style={{
-                    color: isDone
-                      ? nameColor
-                      : isActive
-                      ? nameColor
-                      : labelColor,
-                    opacity: isDone || isActive ? 1 : 0.6,
+                    color:
+                      isDone || isActive
+                        ? "var(--text-primary)"
+                        : "var(--text-tertiary)",
                   }}
                 >
                   {step.label}
