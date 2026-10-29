@@ -138,33 +138,35 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --bg-page: #ECEBF3;
+  --bg-page: #E9E7F3;
   --bg-page-gradient:
-    radial-gradient(1000px 520px at 12% -18%, rgba(124, 92, 255, 0.12), transparent 60%),
-    #ECEBF3;
+    radial-gradient(1000px 540px at 10% -16%, rgba(124, 92, 255, 0.20), transparent 60%),
+    radial-gradient(800px 500px at 100% 105%, rgba(124, 92, 255, 0.10), transparent 60%),
+    #E9E7F3;
   --bg-elevated: #F8F7FC;
 
   --surface-1: #FCFBFF;
-  --surface-2: #F3F1F9;
-  --surface-3: #E6E3F0;
-  --surface-hover: #EFEDF7;
+  --surface-2: #F0EDFA;
+  --surface-3: #F2F0FA;
+  --surface-hover: #ECE8F8;
   --surface-accent: #FCFBFF;
   --surface-inverse: #17151F;
 
-  --card-bg: linear-gradient(180deg, #FFFFFF 0%, #FAF9FE 100%);
+  --card-bg: linear-gradient(180deg, #FFFFFF 0%, #FBFAFF 100%);
   --hero-bg:
-    radial-gradient(70% 130% at 100% 0%, rgba(124, 92, 255, 0.15) 0%, transparent 62%),
-    linear-gradient(180deg, #FFFFFF 0%, #F9F8FE 100%);
-  --hero-footer-bg: rgba(23, 21, 31, 0.03);
-  --card-border: rgba(30, 24, 60, 0.12);
-  --row-border: rgba(30, 24, 60, 0.08);
-  --row-hover: #F3F1F9;
-  --hover-overlay: rgba(30, 24, 60, 0.06);
+    radial-gradient(70% 130% at 100% 0%, rgba(124, 92, 255, 0.24) 0%, transparent 62%),
+    radial-gradient(50% 90% at 0% 100%, rgba(124, 92, 255, 0.08) 0%, transparent 62%),
+    linear-gradient(180deg, #FFFFFF 0%, #F7F4FF 100%);
+  --hero-footer-bg: rgba(91, 63, 217, 0.06);
+  --card-border: rgba(40, 28, 100, 0.15);
+  --row-border: rgba(40, 28, 100, 0.10);
+  --row-hover: #F4F1FD;
+  --hover-overlay: rgba(91, 63, 217, 0.08);
 
   --spectrum: linear-gradient(90deg, #EF4B5E 0%, #F59A3C 28%, #E8C21F 50%, #4CC46A 74%, #5B86F0 100%);
 
   --border-subtle: rgba(30, 24, 60, 0.10);
-  --border-medium: rgba(30, 24, 60, 0.20);
+  --border-medium: rgba(40, 28, 100, 0.24);
   --border-strong: rgba(91, 63, 217, 0.50);
   --border-accent: rgba(91, 63, 217, 0.42);
   --border-inset-top: inset 0 0 0 transparent;
@@ -200,7 +202,7 @@
   --accent-danger: #BF3030;
   --accent-danger-soft: rgba(191, 48, 48, 0.10);
 
-  --bar-track: #D6D2E4;
+  --bar-track: #DAD5EE;
   --bar-fill: #5B3FD9;
   --bar-fill-best: #5E9410;
   --bar-fill-second: #5B3FD9;
@@ -215,29 +217,29 @@
   --radius-sm: 8px; --radius-md: 10px; --radius-lg: 14px; --radius-xl: 18px; --radius-full: 999px;
 
   --shadow-xs: 0 1px 2px rgba(30, 24, 60, 0.08);
-  --shadow-sm: 0 1px 3px rgba(30, 24, 60, 0.10), 0 6px 16px rgba(30, 24, 60, 0.06);
-  --shadow-md: 0 2px 6px rgba(30, 24, 60, 0.10), 0 10px 28px rgba(30, 24, 60, 0.08);
-  --shadow-lg: 0 4px 12px rgba(30, 24, 60, 0.12), 0 18px 44px rgba(30, 24, 60, 0.10);
+  --shadow-sm: 0 1px 2px rgba(40, 28, 100, 0.07), 0 6px 18px rgba(40, 28, 100, 0.07);
+  --shadow-md: 0 2px 6px rgba(40, 28, 100, 0.08), 0 14px 36px rgba(40, 28, 100, 0.10);
+  --shadow-lg: 0 4px 12px rgba(40, 28, 100, 0.12), 0 24px 56px rgba(40, 28, 100, 0.14);
   --shadow-inset-top: inset 0 0 0 transparent;
   --shadow-header: 0 1px 0 rgba(30, 24, 60, 0.06);
 
-  --nav-bg: rgba(250, 249, 254, 0.86);
-  --nav-border: rgba(30, 24, 60, 0.10);
+  --nav-bg: rgba(251, 250, 255, 0.88);
+  --nav-border: rgba(40, 28, 100, 0.12);
   --nav-text: #4A4760;
   --nav-text-hover: #17151F;
-  --nav-hover-bg: rgba(30, 24, 60, 0.06);
+  --nav-hover-bg: rgba(91, 63, 217, 0.09);
   --nav-active-bg: linear-gradient(135deg, #6B4FE8 0%, #4A32C4 100%);
   --nav-active-text: #FFFFFF;
-  --toggle-bg: rgba(30, 24, 60, 0.05);
-  --toggle-border: rgba(30, 24, 60, 0.10);
+  --toggle-bg: rgba(91, 63, 217, 0.07);
+  --toggle-border: rgba(91, 63, 217, 0.18);
   --logo-bg: #5B3FD9;
   --logo-border: transparent;
   --logo-icon: #FFFFFF;
 
   --icon: #2A2640;
-  --icon-box-bg: rgba(30, 24, 60, 0.06);
-  --icon-box-border: rgba(30, 24, 60, 0.16);
-  --link: #17151F;
+  --icon-box-bg: rgba(91, 63, 217, 0.07);
+  --icon-box-border: rgba(91, 63, 217, 0.22);
+  --link: #34228F;
   --chip-text: #FFFFFF;
   --chip-lilac-bg: #5B3FD9;
   --chip-pink-bg: #C2307A;
@@ -246,7 +248,7 @@
 
   --selection-bg: rgba(91, 63, 217, 0.20);
   --selection-text: #17151F;
-  --scrollbar-track: #ECEBF3;
+  --scrollbar-track: #E9E7F3;
   --scrollbar-thumb: rgba(30, 24, 60, 0.20);
   --scrollbar-thumb-hover: rgba(30, 24, 60, 0.32);
 }

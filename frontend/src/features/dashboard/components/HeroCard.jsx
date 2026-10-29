@@ -20,9 +20,9 @@ export default function HeroCard() {
         <span
           className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10.5px] font-bold uppercase tracking-[0.14em]"
           style={{
-            background: "var(--accent-cyan-soft)",
-            color: "var(--accent-cyan)",
-            border: "1px solid var(--accent-cyan-border)",
+            background: "var(--chip-lilac-bg)",
+            color: "var(--chip-text)",
+            border: "1px solid transparent",
           }}
         >
           <FlaskConical size={10} strokeWidth={2.4} />
@@ -87,66 +87,66 @@ export default function HeroCard() {
 
       {/* Barra inferior con métricas integradas */}
       <div
-        className="grid grid-cols-3 divide-x"
+        className="grid grid-cols-3"
         style={{
-          borderTop: "1px solid var(--row-border)",
-          borderColor: "var(--row-border)",
-          background: "var(--hero-footer-bg)",
+          borderTop: "1px solid var(--card-border)",
+          background: "var(--surface-2)",
         }}
       >
-        <div className="px-6 py-5">
-          <p
-            className="text-[10px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: "var(--text-tertiary)" }}
+        {[
+          {
+            label: "Dataset",
+            value: "68 × 378",
+            note: "moléculas · dianas",
+            dot: "var(--chip-lilac-bg)",
+            valueColor: "var(--text-primary)",
+          },
+          {
+            label: "Modelo",
+            value: "CI 0.85",
+            note: "concordance index",
+            dot: "var(--chip-lime-bg)",
+            valueColor: "var(--chip-lime-bg)",
+          },
+          {
+            label: "Pares con afinidad",
+            value: "30.000",
+            note: "dataset Davis",
+            dot: "var(--chip-pink-bg)",
+            valueColor: "var(--text-primary)",
+          },
+        ].map((m, i) => (
+          <div
+            key={m.label}
+            className="px-6 py-5"
+            style={{
+              borderLeft: i === 0 ? "none" : "1px solid var(--row-border)",
+            }}
           >
-            Dataset
-          </p>
-          <p
-            className="mt-2 font-mono text-[18px] font-bold tabular-nums leading-none tracking-[-0.02em]"
-            style={{ color: "var(--text-primary)" }}
-          >
-            68 × 378
-          </p>
-          <p className="mt-1.5 text-[11px]" style={{ color: "var(--text-tertiary)" }}>
-            moléculas · dianas
-          </p>
-        </div>
-
-        <div className="px-6 py-5">
-          <p
-            className="text-[10px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: "var(--text-tertiary)" }}
-          >
-            Modelo
-          </p>
-          <p
-            className="mt-2 font-mono text-[18px] font-bold tabular-nums leading-none tracking-[-0.02em]"
-            style={{ color: "var(--accent-cyan)" }}
-          >
-            CI 0.85
-          </p>
-          <p className="mt-1.5 text-[11px]" style={{ color: "var(--text-tertiary)" }}>
-            concordance index
-          </p>
-        </div>
-
-        <div className="px-6 py-5">
-          <p
-            className="text-[10px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: "var(--text-tertiary)" }}
-          >
-            Pares con afinidad
-          </p>
-          <p
-            className="mt-2 font-mono text-[18px] font-bold tabular-nums leading-none tracking-[-0.02em]"
-            style={{ color: "var(--text-primary)" }}
-          >
-            30.000
-          </p>
-          <p className="mt-1.5 text-[11px]" style={{ color: "var(--text-tertiary)" }}>
-            dataset Davis
-          </p>
-        </div>
+            <p
+              className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              <span
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ background: m.dot }}
+              />
+              {m.label}
+            </p>
+            <p
+              className="mt-2.5 font-mono text-[22px] font-bold tabular-nums leading-none tracking-[-0.02em]"
+              style={{ color: m.valueColor }}
+            >
+              {m.value}
+            </p>
+            <p
+              className="mt-2 text-[12px]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              {m.note}
+            </p>
+          </div>
+        ))}
       </div>
     </motion.div>
   );
