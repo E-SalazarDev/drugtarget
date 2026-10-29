@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Sparkles, TrendingUp, BarChart3, ArrowRight } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
 import ProteinSelector from "../components/ProteinSelector";
 import TopCandidate from "../components/TopCandidate";
 import RankingRow from "../components/RankingRow";
@@ -15,23 +14,20 @@ import {
 
 const ROWS_PER_PAGE = 7;
 
-export default function PredictionsPage() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+const cardStyle = {
+  background: "var(--card-bg)",
+  border: "1px solid var(--card-border)",
+  boxShadow: "var(--shadow-sm)",
+};
 
+const sectionTitle =
+  "text-[13px] font-bold uppercase tracking-[0.14em]";
+
+export default function PredictionsPage() {
   const [selectedProteinId, setSelectedProteinId] = useState(1);
   const [state, setState] = useState("idle");
   const [ranking, setRanking] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const nameColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const labelColor = isDark ? "#9CA3B4" : "#4A5170";
-  const helperColor = isDark ? "#7A8494" : "#6B7692";
-  const accentCyan = isDark ? "#22D3E6" : "#0A7C85";
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
-  const cardBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.08)";
 
   const selectedProtein = MOCK_PROTEINS.find(
     (p) => p.id === selectedProteinId
@@ -91,11 +87,11 @@ export default function PredictionsPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
         className="rounded-2xl p-5"
-        style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+        style={cardStyle}
       >
         <label
-          className="mb-2 block text-[10.5px] font-bold uppercase tracking-[0.14em]"
-          style={{ color: labelColor }}
+          className="mb-2.5 block text-[11.5px] font-bold uppercase tracking-[0.14em]"
+          style={{ color: "var(--text-secondary)" }}
         >
           Proteína objetivo
         </label>
@@ -115,12 +111,11 @@ export default function PredictionsPage() {
           </div>
 
           <div className="shrink-0">
-            {/* Botón más delgado: h-10 en lugar de h-11 */}
             <button
               type="button"
               onClick={handlePredict}
               disabled={state === "loading"}
-              className="group inline-flex h-10 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg px-5 text-[13px] font-semibold transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60 lg:w-50"
+              className="group inline-flex h-11 w-full items-center justify-center gap-2 whitespace-nowrap rounded-lg px-5 text-[13px] font-semibold transition-all hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-60 lg:w-52"
               style={{
                 background: "var(--accent)",
                 color: "var(--text-on-accent)",
@@ -149,35 +144,28 @@ export default function PredictionsPage() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.4 }}
             className="rounded-2xl p-12 text-center"
-            style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+            style={cardStyle}
           >
             <div
-              className="mx-auto flex h-14 w-14 items-center justify-center rounded-full"
+              className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl"
               style={{
-                background: isDark
-                  ? "rgba(34, 211, 230, 0.10)"
-                  : "rgba(10, 124, 133, 0.08)",
-                border: `1px solid ${
-                  isDark
-                    ? "rgba(34, 211, 230, 0.20)"
-                    : "rgba(10, 124, 133, 0.18)"
-                }`,
+                background: "linear-gradient(135deg, #9B82FF 0%, #6D4AF2 100%)",
               }}
             >
-              <BarChart3 size={22} strokeWidth={2} style={{ color: accentCyan }} />
+              <BarChart3 size={22} strokeWidth={2.2} color="#FFFFFF" />
             </div>
             <h2
               className="mt-5 text-[18px] font-bold tracking-[-0.01em]"
-              style={{ color: nameColor }}
+              style={{ color: "var(--text-primary)" }}
             >
               Sin predicciones todavía
             </h2>
             <p
-              className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed"
-              style={{ color: labelColor }}
+              className="mx-auto mt-2 max-w-md text-[13.5px] leading-relaxed"
+              style={{ color: "var(--text-secondary)" }}
             >
               Selecciona una proteína objetivo y presiona{" "}
-              <span style={{ color: nameColor, fontWeight: 600 }}>
+              <span style={{ color: "var(--text-primary)", fontWeight: 700 }}>
                 Calcular ranking
               </span>{" "}
               para obtener el listado de moléculas ordenadas por afinidad.
@@ -202,33 +190,29 @@ export default function PredictionsPage() {
           >
             <div
               className="flex flex-wrap items-center justify-between gap-4 rounded-2xl px-5 py-4"
-              style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+              style={cardStyle}
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-lg"
-                  style={{
-                    background: isDark
-                      ? "rgba(34, 211, 230, 0.10)"
-                      : "rgba(10, 124, 133, 0.08)",
-                  }}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg"
+                  style={{ background: "var(--chip-lilac-bg)" }}
                 >
                   <TrendingUp
-                    size={14}
-                    strokeWidth={2.2}
-                    style={{ color: accentCyan }}
+                    size={16}
+                    strokeWidth={2.4}
+                    style={{ color: "var(--chip-text)" }}
                   />
                 </div>
                 <div>
                   <p
-                    className="text-[12.5px] font-semibold"
-                    style={{ color: nameColor }}
+                    className="text-[14px] font-bold"
+                    style={{ color: "var(--text-primary)" }}
                   >
                     {selectedProtein.name}
                   </p>
                   <p
-                    className="mt-0.5 font-mono text-[10.5px]"
-                    style={{ color: helperColor }}
+                    className="mt-0.5 font-mono text-[12px]"
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     {ranking.length} moléculas evaluadas
                   </p>
@@ -236,8 +220,12 @@ export default function PredictionsPage() {
               </div>
 
               <span
-                className="font-mono text-[11px] tabular-nums tracking-wider"
-                style={{ color: helperColor }}
+                className="rounded-full px-3 py-1.5 font-mono text-[12px] font-semibold tabular-nums"
+                style={{
+                  color: "var(--text-primary)",
+                  background: "var(--icon-box-bg)",
+                  border: "1px solid var(--icon-box-border)",
+                }}
               >
                 Página {currentPage} de {totalPages}
               </span>
@@ -245,8 +233,8 @@ export default function PredictionsPage() {
 
             <div>
               <h2
-                className="mb-4 text-[14px] font-bold uppercase tracking-[0.14em]"
-                style={{ color: labelColor }}
+                className={`mb-5 ${sectionTitle}`}
+                style={{ color: "var(--text-secondary)" }}
               >
                 Top candidatos
               </h2>
@@ -282,14 +270,14 @@ export default function PredictionsPage() {
               <div>
                 <div className="mb-4 flex items-center justify-between">
                   <h2
-                    className="text-[14px] font-bold uppercase tracking-[0.14em]"
-                    style={{ color: labelColor }}
+                    className={sectionTitle}
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     Resto del ranking
                   </h2>
                   <span
-                    className="font-mono text-[11px] tabular-nums tracking-wider"
-                    style={{ color: helperColor }}
+                    className="font-mono text-[12px] font-semibold tabular-nums tracking-wider"
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     {pageStart + 1}–{pageStart + pageItems.length} de{" "}
                     {restOfRanking.length}
