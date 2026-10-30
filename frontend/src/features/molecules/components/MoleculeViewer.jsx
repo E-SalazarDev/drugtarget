@@ -21,7 +21,6 @@ function parseMolblock(molblock) {
 
   const lines = molblock.split("\n");
 
-  // Línea 3: conteo
   const countsLine = lines[3] || "";
   const numAtoms = parseInt(countsLine.substring(0, 3).trim(), 10) || 0;
 
@@ -29,21 +28,18 @@ function parseMolblock(molblock) {
     return { formula: "", atomCount: 0 };
   }
 
-  // Contar elementos leyendo las primeras `numAtoms` líneas de átomos
   const elementCounts = {};
   for (let i = 0; i < numAtoms; i++) {
     const atomLine = lines[4 + i];
     if (!atomLine || atomLine.length < 34) continue;
 
-    // Columna 31-34 (índice 31-33) tiene el símbolo del elemento
     const sym = atomLine.substring(31, 34).trim();
     if (sym) {
       elementCounts[sym] = (elementCounts[sym] || 0) + 1;
     }
   }
 
-  // Construir fórmula molecular en orden estándar (Hill system):
-  // Carbono primero, Hidrógeno segundo, resto alfabético
+  // Fórmula en orden Hill: C, H y el resto alfabético
   const parts = [];
 
   if (elementCounts.C) {
@@ -68,6 +64,15 @@ function parseMolblock(molblock) {
   };
 }
 
+// El visor 3D es siempre oscuro (en modo claro y oscuro),
+// por eso sus colores son fijos y no usan tokens del tema.
+const VIEWER_BG = "#0D0C14";
+const LILAC = "#CABEFF";
+const DANGER = "#FF7A7A";
+const TEXT_STRONG = "rgba(244, 243, 251, 0.88)";
+const TEXT_MID = "rgba(244, 243, 251, 0.68)";
+const TEXT_SOFT = "rgba(244, 243, 251, 0.50)";
+
 export default function MoleculeViewer({
   smiles,
   height = 520,
@@ -82,7 +87,7 @@ export default function MoleculeViewer({
   const [retryKey, setRetryKey] = useState(0);
   const [spinning, setSpinning] = useState(true);
 
-  const bgColor = "#0B0E14";
+  const bgColor = VIEWER_BG;
 
   useEffect(() => {
     if (!smiles) return;
@@ -107,7 +112,6 @@ export default function MoleculeViewer({
 
         const molblock = mol.get_molblock();
 
-        // Parsear molblock para extraer fórmula y cantidad de átomos
         const parsed = parseMolblock(molblock);
         if (parsed.formula) setFormula(parsed.formula);
         if (parsed.atomCount) setAtomCount(parsed.atomCount);
@@ -193,7 +197,7 @@ export default function MoleculeViewer({
       style={{
         height,
         background: bgColor,
-        border: "1px solid var(--border-subtle)",
+        border: "1px solid var(--card-border)",
       }}
     >
       {/* Canvas */}
@@ -208,28 +212,24 @@ export default function MoleculeViewer({
           <span className="relative flex h-2 w-2">
             <span
               className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
-              style={{
-                background: status === "error" ? "#F87171" : "#22D3E6",
-              }}
+              style={{ background: status === "error" ? DANGER : LILAC }}
             />
             <span
               className="relative inline-flex h-2 w-2 rounded-full"
-              style={{
-                background: status === "error" ? "#F87171" : "#22D3E6",
-              }}
+              style={{ background: status === "error" ? DANGER : LILAC }}
             />
           </span>
           <span
             className="font-mono text-[11px] font-semibold uppercase tracking-[0.16em]"
-            style={{ color: "rgba(220, 230, 255, 0.75)" }}
+            style={{ color: TEXT_STRONG }}
           >
             Vista molecular
           </span>
         </div>
 
         <span
-          className="font-mono text-[11px] tabular-nums tracking-wider"
-          style={{ color: "rgba(220, 230, 255, 0.55)" }}
+          className="font-mono text-[11.5px] tabular-nums tracking-wider"
+          style={{ color: TEXT_MID }}
         >
           {status === "loading" && "procesando…"}
           {status === "ready" && `${atomCount} átomos`}
@@ -243,8 +243,8 @@ export default function MoleculeViewer({
         style={{ zIndex: 3 }}
       >
         <span
-          className="font-mono text-[10.5px] tracking-wider"
-          style={{ color: "rgba(220, 230, 255, 0.38)" }}
+          className="font-mono text-[11px] tracking-wider"
+          style={{ color: TEXT_SOFT }}
         >
           Arrastra para rotar · scroll para zoom
         </span>
@@ -258,23 +258,21 @@ export default function MoleculeViewer({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.3 }}
-          className="absolute bottom-3 left-4 flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-[11px] font-medium backdrop-blur transition-colors"
+          className="absolute bottom-3 left-4 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11.5px] font-semibold backdrop-blur transition-colors"
           style={{
             zIndex: 5,
-            background: "rgba(255, 255, 255, 0.06)",
-            color: "rgba(220, 230, 255, 0.85)",
-            border: "1px solid rgba(255, 255, 255, 0.10)",
+            background: "rgba(255, 255, 255, 0.10)",
+            color: "#F4F3FB",
+            border: "1px solid rgba(255, 255, 255, 0.18)",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(255, 255, 255, 0.12)";
-            e.currentTarget.style.color = "#FFFFFF";
+            e.currentTarget.style.background = "rgba(255, 255, 255, 0.18)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(255, 255, 255, 0.06)";
-            e.currentTarget.style.color = "rgba(220, 230, 255, 0.85)";
+            e.currentTarget.style.background = "rgba(255, 255, 255, 0.10)";
           }}
         >
-          <RotateCw size={12} strokeWidth={2.2} />
+          <RotateCw size={12} strokeWidth={2.3} />
           {spinning ? "Detener" : "Reanudar"}
         </motion.button>
       )}
@@ -289,12 +287,8 @@ export default function MoleculeViewer({
           style={{ zIndex: 5 }}
         >
           <span
-            className="rounded-md px-2 py-1 font-mono text-[10.5px] font-semibold tracking-wider"
-            style={{
-              color: "rgba(220, 230, 255, 0.75)",
-              background: "rgba(255, 255, 255, 0.06)",
-              border: "1px solid rgba(255, 255, 255, 0.10)",
-            }}
+            className="rounded-md px-2.5 py-1 font-mono text-[11px] font-bold tracking-wider"
+            style={{ color: "#14102B", background: LILAC }}
           >
             {formula}
           </span>
@@ -315,17 +309,17 @@ export default function MoleculeViewer({
           >
             <div
               className="text-[12.5px] font-medium"
-              style={{ color: "rgba(220, 230, 255, 0.55)" }}
+              style={{ color: TEXT_MID }}
             >
               Generando estructura 3D…
             </div>
             <div
               className="h-0.5 w-32 overflow-hidden rounded-full"
-              style={{ background: "rgba(255,255,255,0.08)" }}
+              style={{ background: "rgba(255,255,255,0.10)" }}
             >
               <motion.div
                 className="h-full w-1/3 rounded-full"
-                style={{ background: "#22D3E6" }}
+                style={{ background: LILAC }}
                 animate={{ x: ["-100%", "300%"] }}
                 transition={{ duration: 1.4, repeat: Infinity, ease: "easeInOut" }}
               />
@@ -349,22 +343,22 @@ export default function MoleculeViewer({
             <div
               className="flex h-11 w-11 items-center justify-center rounded-full"
               style={{
-                background: "rgba(248, 113, 113, 0.08)",
-                border: "1px solid rgba(248, 113, 113, 0.20)",
+                background: "rgba(255, 122, 122, 0.12)",
+                border: "1px solid rgba(255, 122, 122, 0.32)",
               }}
             >
-              <AlertCircle size={18} strokeWidth={2} style={{ color: "#F87171" }} />
+              <AlertCircle size={18} strokeWidth={2} style={{ color: DANGER }} />
             </div>
             <div className="text-center">
               <p
-                className="text-[13.5px] font-medium"
-                style={{ color: "var(--text-primary)" }}
+                className="text-[14px] font-semibold"
+                style={{ color: "#F6F6FB" }}
               >
                 No se pudo cargar la estructura
               </p>
               <p
-                className="mt-1.5 max-w-xs text-[12px]"
-                style={{ color: "rgba(220, 230, 255, 0.5)" }}
+                className="mt-1.5 max-w-xs text-[12.5px]"
+                style={{ color: TEXT_MID }}
               >
                 El servicio de visualización no está disponible en este momento.
               </p>
@@ -372,14 +366,10 @@ export default function MoleculeViewer({
             <button
               type="button"
               onClick={handleRetry}
-              className="mt-2 inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-[12.5px] font-medium transition-colors"
-              style={{
-                background: "rgba(255, 255, 255, 0.06)",
-                color: "#F0F2F5",
-                border: "1px solid rgba(255, 255, 255, 0.10)",
-              }}
+              className="mt-2 inline-flex items-center gap-2 rounded-full px-4 py-2 text-[12.5px] font-semibold transition-opacity hover:opacity-90"
+              style={{ background: "#F2F1FA", color: "#14102B" }}
             >
-              <RefreshCw size={13} strokeWidth={2} />
+              <RefreshCw size={13} strokeWidth={2.2} />
               Reintentar
             </button>
           </motion.div>
