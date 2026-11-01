@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { useTheme } from "../../../providers/ThemeProvider";
 
 /**
  * ProteinSequenceViewer
@@ -10,15 +9,11 @@ import { useTheme } from "../../../providers/ThemeProvider";
  *  - Colores por tipo de aminoácido (categorías químicas)
  *  - Toggle entre vista coloreada y vista plana
  *
- * Categorías de aminoácidos:
- *  - Hidrofóbicos (amarillo)
- *  - Polares (verde)
- *  - Ácidos (rojo)
- *  - Básicos (azul)
- *  - Especiales (gris)
+ * Categorías:
+ *  - Hidrofóbicos (ámbar)  - Polares (lima)
+ *  - Ácidos (rojo)         - Básicos (lavanda)
  */
 
-// Categorías de aminoácidos por propiedad química
 const AA_CATEGORIES = {
   // Hidrofóbicos — cadena lateral apolar
   A: "hydrophobic", V: "hydrophobic", L: "hydrophobic", I: "hydrophobic",
@@ -32,20 +27,13 @@ const AA_CATEGORIES = {
   K: "basic", R: "basic", H: "basic",
 };
 
-const CATEGORY_STYLES_DARK = {
-  hydrophobic: { color: "#FBBF24", bg: "rgba(251, 191, 36, 0.14)" },
-  polar:       { color: "#4ADE80", bg: "rgba(74, 222, 128, 0.14)" },
-  acidic:      { color: "#F87171", bg: "rgba(248, 113, 113, 0.14)" },
-  basic:       { color: "#60A5FA", bg: "rgba(96, 165, 250, 0.14)" },
-  default:     { color: "#9CA3B4", bg: "rgba(156, 163, 180, 0.10)" },
-};
-
-const CATEGORY_STYLES_LIGHT = {
-  hydrophobic: { color: "#92400E", bg: "rgba(217, 119, 6, 0.10)" },
-  polar:       { color: "#166534", bg: "rgba(22, 101, 52, 0.10)" },
-  acidic:      { color: "#991B1B", bg: "rgba(153, 27, 27, 0.10)" },
-  basic:       { color: "#1E40AF", bg: "rgba(30, 64, 175, 0.10)" },
-  default:     { color: "#4A5170", bg: "rgba(74, 81, 112, 0.06)" },
+// Todos los colores salen de tokens.css, así funcionan en claro y oscuro
+const CATEGORY_STYLES = {
+  hydrophobic: { color: "var(--accent-warning)", bg: "var(--accent-warning-soft)" },
+  polar:       { color: "var(--accent-success)", bg: "var(--accent-success-soft)" },
+  acidic:      { color: "var(--accent-danger)",  bg: "var(--accent-danger-soft)" },
+  basic:       { color: "var(--accent-cyan)",    bg: "var(--accent-cyan-soft)" },
+  default:     { color: "var(--text-secondary)", bg: "var(--icon-box-bg)" },
 };
 
 const LEGEND = [
@@ -55,20 +43,8 @@ const LEGEND = [
   { key: "basic", label: "Básico" },
 ];
 
-export default function ProteinSequenceViewer({ sequence, linesPerBlock = 60 }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+export default function ProteinSequenceViewer({ sequence = "", linesPerBlock = 60 }) {
   const [colored, setColored] = useState(true);
-
-  const categoryStyles = isDark ? CATEGORY_STYLES_DARK : CATEGORY_STYLES_LIGHT;
-
-  // Colores base
-  const blockBg = isDark ? "#0F1219" : "#F5F7FA";
-  const blockBorder = isDark
-    ? "rgba(255, 255, 255, 0.06)"
-    : "rgba(14, 19, 48, 0.08)";
-  const numberColor = isDark ? "#5A6480" : "#8A93A4";
-  const plainAAColor = isDark ? "#E2E6EE" : "#1F2540";
 
   // Partimos la secuencia en líneas de `linesPerBlock` caracteres
   const lines = useMemo(() => {
@@ -85,39 +61,32 @@ export default function ProteinSequenceViewer({ sequence, linesPerBlock = 60 }) 
 
   return (
     <div>
-      {/* Header con toggle + leyenda */}
+      {/* Header con leyenda + toggle */}
       <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-3">
-          {LEGEND.map((item) => {
-            const style = categoryStyles[item.key];
-            return (
+        <div className="flex flex-wrap items-center gap-4">
+          {LEGEND.map((item) => (
+            <span
+              key={item.key}
+              className="flex items-center gap-2 text-[12px] font-semibold"
+              style={{ color: "var(--text-secondary)" }}
+            >
               <span
-                key={item.key}
-                className="flex items-center gap-1.5 text-[11px] font-medium"
-                style={{ color: isDark ? "#9CA3B4" : "#4A5170" }}
-              >
-                <span
-                  className="h-2 w-2 rounded-sm"
-                  style={{ background: style.color }}
-                />
-                {item.label}
-              </span>
-            );
-          })}
+                className="h-2.5 w-2.5 rounded-sm"
+                style={{ background: CATEGORY_STYLES[item.key].color }}
+              />
+              {item.label}
+            </span>
+          ))}
         </div>
 
         <button
           type="button"
           onClick={() => setColored((c) => !c)}
-          className="rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors"
+          className="rounded-full px-3.5 py-1.5 text-[12px] font-semibold transition-colors hover:bg-(--hover-overlay)"
           style={{
-            background: isDark
-              ? "rgba(255, 255, 255, 0.06)"
-              : "rgba(14, 19, 48, 0.05)",
-            color: isDark ? "#E2E6EE" : "#2E3550",
-            border: `1px solid ${
-              isDark ? "rgba(255, 255, 255, 0.10)" : "rgba(14, 19, 48, 0.08)"
-            }`,
+            background: "var(--icon-box-bg)",
+            color: "var(--link)",
+            border: "1px solid var(--icon-box-border)",
           }}
         >
           {colored ? "Vista plana" : "Vista coloreada"}
@@ -126,19 +95,19 @@ export default function ProteinSequenceViewer({ sequence, linesPerBlock = 60 }) 
 
       {/* Secuencia */}
       <div
-        className="overflow-x-auto rounded-lg p-4"
+        className="overflow-x-auto rounded-xl p-4"
         style={{
-          background: blockBg,
-          border: `1px solid ${blockBorder}`,
+          background: "var(--surface-3)",
+          border: "1px solid var(--row-border)",
         }}
       >
-        <div className="space-y-1.5 font-mono text-[12.5px] leading-[1.6]">
+        <div className="space-y-2 font-mono text-[13px] leading-[1.7]">
           {lines.map((line, idx) => (
             <div key={idx} className="flex gap-4">
               {/* Número de línea */}
               <span
                 className="shrink-0 select-none tabular-nums"
-                style={{ color: numberColor, minWidth: 56 }}
+                style={{ color: "var(--text-tertiary)", minWidth: 56 }}
               >
                 {(line.start + 1).toString().padStart(4, " ")}
               </span>
@@ -146,21 +115,18 @@ export default function ProteinSequenceViewer({ sequence, linesPerBlock = 60 }) 
               {/* Aminoácidos — agrupados en bloques de 10 */}
               <span className="break-all">
                 {line.text.match(/.{1,10}/g)?.map((group, gi) => (
-                  <span key={gi} className="mr-2.5 inline-block">
+                  <span key={gi} className="mr-3 inline-block">
                     {group.split("").map((aa, ai) => {
-                      const category = AA_CATEGORIES[aa] || "default";
-                      const style = categoryStyles[category];
-
                       if (!colored) {
                         return (
-                          <span
-                            key={ai}
-                            style={{ color: plainAAColor }}
-                          >
+                          <span key={ai} style={{ color: "var(--text-primary)" }}>
                             {aa}
                           </span>
                         );
                       }
+
+                      const style =
+                        CATEGORY_STYLES[AA_CATEGORIES[aa] || "default"];
 
                       return (
                         <span
@@ -169,7 +135,8 @@ export default function ProteinSequenceViewer({ sequence, linesPerBlock = 60 }) 
                             color: style.color,
                             background: style.bg,
                             borderRadius: 3,
-                            padding: "1px 1px",
+                            padding: "1px 1.5px",
+                            fontWeight: 600,
                           }}
                         >
                           {aa}
@@ -185,13 +152,12 @@ export default function ProteinSequenceViewer({ sequence, linesPerBlock = 60 }) 
       </div>
 
       {/* Pie de info */}
-      <div className="mt-3 flex items-center justify-between text-[11px]">
-        <span style={{ color: isDark ? "#8A93A4" : "#5A6480" }}>
-          {sequence.length} residuos
-        </span>
-        <span style={{ color: isDark ? "#8A93A4" : "#5A6480" }}>
-          {lines.length} líneas
-        </span>
+      <div
+        className="mt-3 flex items-center justify-between text-[12px] font-medium"
+        style={{ color: "var(--text-secondary)" }}
+      >
+        <span>{sequence.length} residuos</span>
+        <span>{lines.length} líneas</span>
       </div>
     </div>
   );
