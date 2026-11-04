@@ -1,74 +1,26 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import {
-  motion,
-  animate,
-  useMotionValue,
-  useMotionTemplate,
-} from "motion/react";
+import { motion } from "motion/react";
 import { Star, ArrowRight, Atom } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
 import { PKd_MIN, PKd_MAX } from "../mock/rankingData";
 
-/**
- * Borde con gradiente cian girando lento para el top 1.
- */
-function RotatingCyanBorder({ children, className, duration = 6 }) {
-  const turn = useMotionValue(0);
-
-  useEffect(() => {
-    const controls = animate(turn, 1, {
-      ease: "linear",
-      duration,
-      repeat: Infinity,
-    });
-    return () => controls.stop();
-  }, [duration, turn]);
-
-  const gradient = useMotionTemplate`conic-gradient(from ${turn}turn, transparent 0%, rgba(34,211,230,0.05) 20%, rgba(34,211,230,0.9) 45%, rgba(34,211,230,0.3) 55%, rgba(34,211,230,0.05) 80%, transparent 100%)`;
-
-  return (
-    <div className={`relative p-px rounded-2xl ${className || ""}`}>
-      <motion.div
-        style={{ backgroundImage: gradient }}
-        className="absolute inset-0 rounded-2xl"
-      />
-      <div className="relative overflow-hidden rounded-[15px]">
-        {children}
-      </div>
-    </div>
-  );
-}
+// Colores del podio: 1.º lima, 2.º lavanda, 3.º ámbar
+const PODIUM = {
+  1: {
+    chip: "var(--chip-lime-bg)",
+    border: "var(--accent-success-border)",
+  },
+  2: {
+    chip: "var(--chip-lilac-bg)",
+    border: "var(--accent-cyan-border)",
+  },
+  3: {
+    chip: "var(--chip-amber-bg)",
+    border: "var(--accent-warning-border)",
+  },
+};
 
 export default function TopCandidate({ rank, item, featured = false }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
-  const nameColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const monoColor = isDark ? "#B8BFCE" : "#2E3550";
-  const labelColor = isDark ? "#9CA3B4" : "#4A5170";
-
-  const colors = {
-    1: {
-      accent: isDark ? "#22D3E6" : "#0A7C85",
-      soft: isDark ? "rgba(34, 211, 230, 0.15)" : "rgba(10, 124, 133, 0.12)",
-      border: isDark ? "rgba(34, 211, 230, 0.5)" : "rgba(10, 124, 133, 0.5)",
-    },
-    2: {
-      accent: isDark ? "#A78BFA" : "#7C3AED",
-      soft: isDark ? "rgba(167, 139, 250, 0.15)" : "rgba(124, 58, 237, 0.12)",
-      border: isDark ? "rgba(167, 139, 250, 0.5)" : "rgba(124, 58, 237, 0.5)",
-    },
-    3: {
-      accent: isDark ? "#FBBF24" : "#B45309",
-      soft: isDark ? "rgba(251, 191, 36, 0.15)" : "rgba(180, 83, 9, 0.12)",
-      border: isDark ? "rgba(251, 191, 36, 0.5)" : "rgba(180, 83, 9, 0.5)",
-    },
-  };
-
-  const c = colors[rank] ?? colors[3];
-
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
+  const c = PODIUM[rank] ?? PODIUM[3];
 
   const pct = Math.max(
     0,
@@ -77,45 +29,45 @@ export default function TopCandidate({ rank, item, featured = false }) {
 
   const cardContent = (
     <div className={`relative ${featured ? "p-7" : "p-6"}`}>
-      {/* Rank + ícono — REDISEÑADO: grande, con color sólido */}
+      {/* Rank + ícono */}
       <div className="flex items-start justify-between">
-        <div className="flex items-baseline gap-1">
+        <div className="flex items-center gap-2.5">
           <span
-            className="font-mono text-[11px] font-medium tracking-wider"
-            style={{ color: c.accent, opacity: 0.7 }}
+            className="rounded-md px-2 py-1 font-mono text-[11px] font-bold uppercase tracking-wider"
+            style={{ background: c.chip, color: "var(--chip-text)" }}
           >
-            RANK
-          </span>
-          <span
-            className={`font-mono font-bold tabular-nums leading-none tracking-[-0.04em] ${
-              featured ? "text-[28px]" : "text-[22px]"
-            }`}
-            style={{ color: c.accent }}
-          >
-            {rank.toString().padStart(2, "0")}
+            Rank {rank.toString().padStart(2, "0")}
           </span>
         </div>
 
-        <Atom
-          size={featured ? 16 : 14}
-          strokeWidth={2.2}
-          style={{ color: c.accent, opacity: 0.6 }}
-        />
+        <div
+          className="flex h-8 w-8 items-center justify-center rounded-lg"
+          style={{
+            background: "var(--icon-box-bg)",
+            border: "1px solid var(--icon-box-border)",
+          }}
+        >
+          <Atom
+            size={15}
+            strokeWidth={2.2}
+            style={{ color: "var(--text-primary)" }}
+          />
+        </div>
       </div>
 
       {/* pKd */}
-      <div className={featured ? "mt-4" : "mt-3"}>
+      <div className={featured ? "mt-5" : "mt-4"}>
         <p
           className={`font-mono font-bold tabular-nums leading-none tracking-[-0.03em] ${
-            featured ? "text-[52px]" : "text-[38px]"
+            featured ? "text-[56px]" : "text-[42px]"
           }`}
-          style={{ color: c.accent }}
+          style={{ color: "var(--text-primary)" }}
         >
           {item.pKd.toFixed(2)}
         </p>
         <p
-          className="mt-2 text-[11px] font-bold uppercase tracking-[0.14em]"
-          style={{ color: labelColor }}
+          className="mt-2.5 text-[11.5px] font-bold uppercase tracking-[0.14em]"
+          style={{ color: "var(--text-secondary)" }}
         >
           pKd predicho
         </p>
@@ -124,16 +76,12 @@ export default function TopCandidate({ rank, item, featured = false }) {
       {/* Barra de afinidad */}
       <div className="mt-4">
         <div
-          className="relative h-1.5 w-full overflow-hidden rounded-full"
-          style={{
-            background: isDark
-              ? "rgba(255, 255, 255, 0.06)"
-              : "rgba(14, 19, 48, 0.06)",
-          }}
+          className="relative h-2 w-full overflow-hidden rounded-full"
+          style={{ background: "var(--bar-track)" }}
         >
           <motion.div
             className="h-full rounded-full"
-            style={{ background: c.accent }}
+            style={{ background: c.chip }}
             initial={{ width: 0 }}
             animate={{ width: `${pct}%` }}
             transition={{
@@ -149,15 +97,19 @@ export default function TopCandidate({ rank, item, featured = false }) {
       <div className="mt-5">
         <h3
           className={`font-bold tracking-[-0.01em] ${
-            featured ? "text-[20px]" : "text-[16px]"
+            featured ? "text-[21px]" : "text-[17px]"
           }`}
-          style={{ color: nameColor }}
+          style={{ color: "var(--text-primary)" }}
         >
           {item.molecule_name}
         </h3>
         <p
-          className="mt-1.5 line-clamp-2 font-mono text-[10.5px] leading-relaxed"
-          style={{ color: monoColor }}
+          className="mt-2 line-clamp-2 rounded-md px-2.5 py-1.5 font-mono text-[11.5px] leading-relaxed"
+          style={{
+            color: "var(--text-primary)",
+            background: "var(--icon-box-bg)",
+            border: "1px solid var(--row-border)",
+          }}
         >
           {item.smiles}
         </p>
@@ -166,24 +118,28 @@ export default function TopCandidate({ rank, item, featured = false }) {
       {/* Fórmula + Ver detalle */}
       <div
         className="mt-5 flex items-center justify-between border-t pt-4"
-        style={{
-          borderColor: isDark
-            ? "rgba(255, 255, 255, 0.06)"
-            : "rgba(14, 19, 48, 0.06)",
-        }}
+        style={{ borderColor: "var(--row-border)" }}
       >
         <span
-          className="font-mono text-[11px]"
-          style={{ color: monoColor }}
+          className="font-mono text-[12px] font-semibold"
+          style={{ color: "var(--text-secondary)" }}
         >
           {item.formula}
         </span>
         <span
-          className="flex items-center gap-1 text-[12px] font-semibold transition-transform group-hover:translate-x-0.5"
-          style={{ color: c.accent }}
+          className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors group-hover:bg-(--hover-overlay)"
+          style={{
+            color: "var(--link)",
+            border: "1px solid var(--icon-box-border)",
+            background: "var(--icon-box-bg)",
+          }}
         >
           Ver detalle
-          <ArrowRight size={12} strokeWidth={2.4} />
+          <ArrowRight
+            size={13}
+            strokeWidth={2.4}
+            className="transition-transform group-hover:translate-x-0.5"
+          />
         </span>
       </div>
     </div>
@@ -200,7 +156,7 @@ export default function TopCandidate({ rank, item, featured = false }) {
       }}
       className={`relative ${featured ? "lg:-mt-4 lg:mb-0" : ""}`}
     >
-      {/* Badge "MEJOR CANDIDATO" solo para el top 1 */}
+      {/* Badge "MEJOR CANDIDATO": chip sólido, sin brillo */}
       {featured && (
         <motion.div
           initial={{ opacity: 0, y: -8 }}
@@ -209,46 +165,45 @@ export default function TopCandidate({ rank, item, featured = false }) {
           className="absolute -top-3 left-1/2 z-20 -translate-x-1/2"
         >
           <div
-            className="flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em]"
+            className="flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.12em]"
             style={{
-              background: c.accent,
-              color: isDark ? "#0A0B0D" : "#FFFFFF",
-              boxShadow: `0 4px 20px ${c.accent}66`,
+              background: c.chip,
+              color: "var(--chip-text)",
+              boxShadow: "var(--shadow-sm)",
             }}
           >
-            <Star size={10} strokeWidth={2.5} fill="currentColor" />
+            <Star size={11} strokeWidth={2.5} fill="currentColor" />
             Mejor candidato
           </div>
         </motion.div>
       )}
 
       {featured ? (
-        <RotatingCyanBorder duration={5}>
+        /* Borde fino con degradado lima → lavanda (estático) */
+        <div
+          className="rounded-2xl p-px"
+          style={{
+            background:
+              "linear-gradient(135deg, var(--chip-lime-bg) 0%, var(--chip-lilac-bg) 100%)",
+            boxShadow: "var(--shadow-md)",
+          }}
+        >
           <Link
             to={`/app/molecules/${item.molecule_id}`}
-            className="group relative block"
-            style={{ background: cardBg }}
+            className="group relative block overflow-hidden rounded-[15px]"
+            style={{ background: "var(--card-bg)" }}
           >
-            <div
-              className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full"
-              style={{
-                background: `radial-gradient(circle, ${c.accent}25 0%, transparent 70%)`,
-                filter: "blur(24px)",
-              }}
-            />
             {cardContent}
           </Link>
-        </RotatingCyanBorder>
+        </div>
       ) : (
         <Link
           to={`/app/molecules/${item.molecule_id}`}
           className="group relative block overflow-hidden rounded-2xl transition-all duration-200"
           style={{
-            background: cardBg,
+            background: "var(--card-bg)",
             border: `1px solid ${c.border}`,
-            boxShadow: isDark
-              ? `0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px ${c.border}`
-              : `0 8px 32px ${c.soft}`,
+            boxShadow: "var(--shadow-md)",
           }}
         >
           {cardContent}
