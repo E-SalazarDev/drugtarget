@@ -1,10 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react";
-import { Plus, Search, ArrowUpRight, X } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
+import { Plus, Search, ArrowUpRight, X, Dna } from "lucide-react";
 
 const SOFT_EASE = [0.22, 1, 0.36, 1];
+
+// Columnas de la lista (la secuencia ocupa el centro)
+const COLS =
+  "lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1.6fr)_150px_120px_32px]";
+
+const PINK_GRADIENT = "linear-gradient(135deg, #FF7FB0 0%, #E8458A 100%)";
 
 const MOCK_PROTEINS = [
   { id: 1, name: "Hemoglobina", uniprot_id: "P69905", length: 142, created_at: "2025-06-12", sequence: "MVLSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKYR" },
@@ -18,9 +23,9 @@ const MOCK_PROTEINS = [
 export default function ProteinsPage() {
   const [query, setQuery] = useState("");
   const [hoveredId, setHoveredId] = useState(null);
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const proteins = MOCK_PROTEINS;
+
+  const maxLength = Math.max(...proteins.map((p) => p.length));
 
   const filtered = proteins.filter((p) => {
     const q = query.toLowerCase();
@@ -30,31 +35,6 @@ export default function ProteinsPage() {
       p.sequence.toLowerCase().includes(q)
     );
   });
-
-  const nameColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const valueColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const monoColor = isDark ? "#B8BFCE" : "#2E3550";
-  const labelColor = isDark ? "#9CA3B4" : "#4A5170";
-
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
-  const cardBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.10)";
-  const cardHoverBg = isDark ? "#1A1E24" : "#FAFBFC";
-  const cardHoverBorder = isDark
-    ? "rgba(167, 139, 250, 0.35)"
-    : "rgba(124, 58, 237, 0.35)";
-
-  const accentViolet = isDark ? "#A78BFA" : "#7C3AED";
-  const accentColor = "var(--accent)";
-
-  const badgeBg = isDark
-    ? "rgba(167, 139, 250, 0.15)"
-    : "rgba(124, 58, 237, 0.10)";
-  const badgeColor = isDark ? "#C4B5FD" : "#5B21B6";
-  const badgeBorder = isDark
-    ? "rgba(167, 139, 250, 0.30)"
-    : "rgba(124, 58, 237, 0.25)";
 
   return (
     <div className="space-y-6">
@@ -93,7 +73,7 @@ export default function ProteinsPage() {
         </Link>
       </motion.div>
 
-      {/* Search + contador */}
+      {/* Buscador + contador */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
@@ -102,10 +82,10 @@ export default function ProteinsPage() {
       >
         <div className="relative flex-1">
           <Search
-            size={15}
+            size={16}
             strokeWidth={2.2}
             className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2"
-            style={{ color: labelColor }}
+            style={{ color: "var(--text-secondary)" }}
           />
           <input
             type="text"
@@ -114,18 +94,16 @@ export default function ProteinsPage() {
             placeholder="Buscar por nombre, UniProt ID o secuencia…"
             className="w-full rounded-lg py-2.5 pl-10 pr-10 text-[13.5px] outline-none transition-colors"
             style={{
-              background: cardBg,
-              border: `1px solid ${cardBorder}`,
-              color: nameColor,
+              background: "var(--card-bg)",
+              border: "1px solid var(--card-border)",
+              color: "var(--text-primary)",
             }}
             onFocus={(e) => {
-              e.target.style.borderColor = accentViolet;
-              e.target.style.boxShadow = `0 0 0 3px ${
-                isDark ? "rgba(167, 139, 250, 0.12)" : "rgba(124, 58, 237, 0.10)"
-              }`;
+              e.target.style.borderColor = "var(--accent-violet)";
+              e.target.style.boxShadow = "0 0 0 3px var(--accent-violet-soft)";
             }}
             onBlur={(e) => {
-              e.target.style.borderColor = cardBorder;
+              e.target.style.borderColor = "var(--card-border)";
               e.target.style.boxShadow = "none";
             }}
           />
@@ -133,26 +111,25 @@ export default function ProteinsPage() {
             <button
               type="button"
               onClick={() => setQuery("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 transition-colors"
-              style={{ color: labelColor }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = nameColor;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = labelColor;
-              }}
+              aria-label="Limpiar búsqueda"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded p-1 transition-colors hover:opacity-80"
+              style={{ color: "var(--text-secondary)" }}
             >
-              <X size={13} strokeWidth={2.2} />
+              <X size={14} strokeWidth={2.2} />
             </button>
           )}
         </div>
 
+        {/* Ej.: "6 de 6 proteínas" = mostradas / total */}
         <span
-          className="shrink-0 font-mono text-[12px] tabular-nums tracking-wider"
-          style={{ color: valueColor, fontWeight: 600 }}
+          className="shrink-0 rounded-full px-3.5 py-2 text-[12.5px] font-semibold tabular-nums"
+          style={{
+            color: "var(--text-primary)",
+            background: "var(--icon-box-bg)",
+            border: "1px solid var(--icon-box-border)",
+          }}
         >
-          {filtered.length.toString().padStart(2, "0")} /{" "}
-          {proteins.length.toString().padStart(2, "0")}
+          {filtered.length} de {proteins.length} proteínas
         </span>
       </motion.div>
 
@@ -163,18 +140,47 @@ export default function ProteinsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.1, ease: SOFT_EASE }}
           className="rounded-2xl px-6 py-16 text-center"
-          style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+          style={{
+            background: "var(--card-bg)",
+            border: "1px solid var(--card-border)",
+          }}
         >
-          <p className="text-[14px] font-medium" style={{ color: nameColor }}>
+          <p
+            className="text-[14px] font-medium"
+            style={{ color: "var(--text-primary)" }}
+          >
             {query
               ? "Sin resultados para esa búsqueda"
               : "Todavía no hay proteínas registradas"}
           </p>
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              className="mt-3 text-[12.5px] font-semibold transition-opacity hover:opacity-80"
+              style={{ color: "var(--link)" }}
+            >
+              Limpiar búsqueda
+            </button>
+          )}
         </motion.div>
       ) : (
         <div className="space-y-2">
+          {/* Encabezados de columna */}
+          <div
+            className={`hidden gap-5 px-5 pb-1 text-[11px] font-bold uppercase tracking-[0.12em] lg:grid ${COLS}`}
+            style={{ color: "var(--text-secondary)" }}
+          >
+            <span>Proteína</span>
+            <span>Secuencia</span>
+            <span>Longitud</span>
+            <span>Registrada</span>
+            <span />
+          </div>
+
           {filtered.map((p, i) => {
             const isHovered = hoveredId === p.id;
+            const pct = Math.round((p.length / maxLength) * 100);
 
             return (
               <motion.div
@@ -191,106 +197,137 @@ export default function ProteinsPage() {
                   to={`/app/proteins/${p.id}`}
                   onMouseEnter={() => setHoveredId(p.id)}
                   onMouseLeave={() => setHoveredId(null)}
-                  className="group relative flex items-center gap-5 rounded-xl px-5 py-4 transition-all duration-200"
+                  className={`group relative grid items-center gap-x-5 gap-y-3 rounded-xl px-5 py-4 transition-all duration-200 ${COLS}`}
                   style={{
-                    background: isHovered ? cardHoverBg : cardBg,
+                    background: isHovered ? "var(--surface-2)" : "var(--card-bg)",
                     border: `1px solid ${
-                      isHovered ? cardHoverBorder : cardBorder
+                      isHovered ? "var(--border-strong)" : "var(--card-border)"
                     }`,
+                    boxShadow: "var(--shadow-sm)",
                   }}
                 >
+                  {/* Barra lateral al hover */}
                   <motion.span
                     className="absolute left-0 top-1/2 -translate-y-1/2 rounded-r-full"
                     style={{
                       width: 3,
                       height: "60%",
-                      background: accentViolet,
+                      background: "var(--chip-pink-bg)",
                     }}
                     initial={false}
                     animate={{ opacity: isHovered ? 1 : 0 }}
                     transition={{ duration: 0.15 }}
                   />
 
-                  <div className="flex min-w-0 flex-1 flex-col gap-2">
-                    <div className="flex items-center gap-2.5">
+                  {/* Proteína: icono + nombre + UniProt */}
+                  <div className="flex min-w-0 items-center gap-3.5">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                      style={{ background: PINK_GRADIENT }}
+                    >
+                      <Dna size={18} strokeWidth={2.2} color="#FFFFFF" />
+                    </div>
+                    <div className="flex min-w-0 flex-col gap-1.5">
                       <span
                         className="truncate text-[15px] font-bold"
-                        style={{ color: nameColor, letterSpacing: "-0.01em" }}
+                        style={{
+                          color: "var(--text-primary)",
+                          letterSpacing: "-0.01em",
+                        }}
                       >
                         {p.name || "Sin nombre"}
                       </span>
                       {p.uniprot_id && (
                         <span
-                          className="shrink-0 rounded-md px-2 py-0.5 font-mono text-[10.5px] font-bold tracking-wide"
+                          className="w-fit rounded-md px-2 py-0.5 font-mono text-[11px] font-bold tracking-wide"
                           style={{
-                            background: badgeBg,
-                            color: badgeColor,
-                            border: `1px solid ${badgeBorder}`,
+                            background: "var(--chip-pink-bg)",
+                            color: "var(--chip-text)",
                           }}
                         >
                           {p.uniprot_id}
                         </span>
                       )}
                     </div>
-                    <span
-                      className="truncate font-mono text-[11.5px] tracking-tight"
-                      style={{ color: monoColor, fontWeight: 500 }}
-                    >
-                      {p.sequence.slice(0, 60)}
-                      {p.sequence.length > 60 ? "…" : ""}
-                    </span>
                   </div>
 
-                  <div className="hidden shrink-0 flex-col items-end gap-1 sm:flex">
-                    <span
-                      className="font-mono text-[15px] tabular-nums"
-                      style={{
-                        color: valueColor,
-                        fontWeight: 700,
-                        letterSpacing: "-0.01em",
-                      }}
-                    >
-                      {p.length}
-                    </span>
-                    <span
-                      className="text-[10px] font-bold uppercase tracking-[0.12em]"
-                      style={{ color: labelColor }}
-                    >
-                      residuos
-                    </span>
-                  </div>
-
-                  <div className="hidden shrink-0 flex-col items-end gap-1 md:flex">
-                    <span
-                      className="font-mono text-[13px] tabular-nums"
-                      style={{ color: valueColor, fontWeight: 600 }}
-                    >
-                      {p.created_at}
-                    </span>
-                    <span
-                      className="text-[10px] font-bold uppercase tracking-[0.12em]"
-                      style={{ color: labelColor }}
-                    >
-                      Registrada
-                    </span>
-                  </div>
-
-                  <motion.div
-                    className="shrink-0"
-                    animate={{
-                      x: isHovered ? 2 : 0,
-                      opacity: isHovered ? 1 : 0.6,
+                  {/* Secuencia (centro) */}
+                  <div
+                    className="min-w-0 truncate rounded-lg px-3 py-2 font-mono text-[12.5px] tracking-tight"
+                    title={p.sequence}
+                    style={{
+                      color: "var(--text-primary)",
+                      background: "var(--icon-box-bg)",
+                      border: "1px solid var(--row-border)",
                     }}
-                    transition={{ duration: 0.15 }}
+                  >
+                    {p.sequence}
+                  </div>
+
+                  {/* Longitud + fecha (en pantallas chicas van en una fila) */}
+                  <div className="flex items-center gap-8 lg:contents">
+                    <div className="flex min-w-32.5 flex-col gap-1.5">
+                      <div className="flex items-baseline gap-1.5">
+                        <span
+                          className="font-mono text-[16px] font-bold tabular-nums"
+                          style={{ color: "var(--text-primary)" }}
+                        >
+                          {p.length}
+                        </span>
+                        <span
+                          className="text-[11px] font-semibold"
+                          style={{ color: "var(--text-secondary)" }}
+                        >
+                          residuos
+                        </span>
+                      </div>
+                      <div
+                        className="h-1.5 w-full overflow-hidden rounded-full"
+                        style={{ background: "var(--bar-track)" }}
+                      >
+                        <div
+                          className="h-full rounded-full"
+                          style={{ width: `${pct}%`, background: PINK_GRADIENT }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-0.5">
+                      <span
+                        className="text-[11px] font-bold uppercase tracking-[0.12em] lg:hidden"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
+                        Registrada
+                      </span>
+                      <span
+                        className="font-mono text-[13.5px] font-semibold tabular-nums"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        {p.created_at}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Flecha */}
+                  <div
+                    className="hidden h-8 w-8 items-center justify-center rounded-full transition-colors lg:flex"
+                    style={{
+                      background: isHovered
+                        ? "var(--accent)"
+                        : "var(--icon-box-bg)",
+                      border: "1px solid var(--icon-box-border)",
+                    }}
                   >
                     <ArrowUpRight
-                      size={16}
+                      size={15}
                       strokeWidth={2.4}
                       style={{
-                        color: isHovered ? accentViolet : labelColor,
+                        color: isHovered
+                          ? "var(--text-on-accent)"
+                          : "var(--text-primary)",
                       }}
                     />
-                  </motion.div>
+                  </div>
                 </Link>
               </motion.div>
             );
