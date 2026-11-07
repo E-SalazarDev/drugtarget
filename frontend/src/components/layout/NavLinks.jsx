@@ -1,11 +1,6 @@
 import { NavLink } from "react-router-dom";
-import {
-  Atom,
-  BrainCircuit,
-  Dna,
-  LayoutDashboard,
-} from "lucide-react";
-import { useTheme } from "../../providers/ThemeProvider";
+import { motion } from "motion/react";
+import { Atom, BrainCircuit, Dna, LayoutDashboard } from "lucide-react";
 
 const navigation = [
   { label: "Resumen", path: "/app", icon: LayoutDashboard, end: true },
@@ -15,15 +10,14 @@ const navigation = [
 ];
 
 export default function NavLinks() {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
-  // Cian sólido en ambos temas
-  const accentCyan = "#22D3E6";
-  const accentTextOn = "#0A0B0D"; // texto oscuro sobre el fondo cian
-
   return (
-    <nav className="flex items-center gap-1">
+    <nav
+      className="flex items-center gap-1 rounded-full p-1"
+      style={{
+        background: "var(--toggle-bg)",
+        border: "1px solid var(--toggle-border)",
+      }}
+    >
       {navigation.map((item) => {
         const Icon = item.icon;
 
@@ -32,49 +26,34 @@ export default function NavLinks() {
             key={item.path}
             to={item.path}
             end={item.end}
-            className="group flex items-center gap-2 rounded-lg px-3.5 py-2 text-[13px] transition-all"
-            style={({ isActive }) => ({
-              background: isActive ? accentCyan : "transparent",
-              color: isActive
-                ? accentTextOn
-                : isDark
-                ? "#98A0AB"
-                : "#5A6480",
-              fontWeight: isActive ? 700 : 500,
-            })}
-            onMouseEnter={(e) => {
-              const link = e.currentTarget;
-              const isActive = link.getAttribute("aria-current") === "page";
-              if (!isActive) {
-                link.style.background = isDark
-                  ? "rgba(255, 255, 255, 0.05)"
-                  : "rgba(14, 19, 48, 0.05)";
-                link.style.color = isDark ? "#FFFFFF" : "#0A0F24";
-              }
-            }}
-            onMouseLeave={(e) => {
-              const link = e.currentTarget;
-              const isActive = link.getAttribute("aria-current") === "page";
-              if (!isActive) {
-                link.style.background = "transparent";
-                link.style.color = isDark ? "#98A0AB" : "#5A6480";
-              }
-            }}
+            className={({ isActive }) =>
+              "relative flex items-center gap-2 rounded-full px-3 py-2 text-[13px] font-semibold transition-colors md:px-4 " +
+              (isActive
+                ? "text-(--text-on-accent)"
+                : "text-(--nav-text) hover:bg-(--nav-hover-bg) hover:text-(--nav-text-hover)")
+            }
           >
             {({ isActive }) => (
               <>
+                {/* Píldora activa: se desliza entre opciones */}
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-active-pill"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background: "var(--accent)",
+                      boxShadow: "var(--shadow-sm)",
+                    }}
+                    transition={{ type: "spring", damping: 24, stiffness: 320 }}
+                  />
+                )}
                 <Icon
-                  className="h-3.5 w-3.5"
-                  strokeWidth={isActive ? 2.4 : 2}
-                  style={{
-                    color: isActive
-                      ? accentTextOn
-                      : isDark
-                      ? "#7A8494"
-                      : "#8A93A4",
-                  }}
+                  className="relative z-10 h-3.75 w-3.75"
+                  strokeWidth={isActive ? 2.4 : 2.1}
                 />
-                <span>{item.label}</span>
+                <span className="relative z-10 hidden md:inline">
+                  {item.label}
+                </span>
               </>
             )}
           </NavLink>
