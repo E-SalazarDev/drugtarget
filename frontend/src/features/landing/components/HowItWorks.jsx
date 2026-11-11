@@ -37,8 +37,10 @@ export default function HowItWorks() {
   return (
     <section
       id="como-funciona"
-      className="relative w-full bg-[#02040C] px-5 py-20 sm:px-8 lg:px-12 xl:px-16"
+      className="relative w-full px-5 py-24 sm:px-8 lg:px-12 xl:px-16"
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/15 to-transparent" />
+
       <div className="mx-auto max-w-375">
         {/* Encabezado */}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
@@ -49,10 +51,12 @@ export default function HowItWorks() {
             transition={{ duration: 0.7, ease: SOFT_EASE }}
             className="max-w-2xl"
           >
-            <h2 className="text-[2.25rem] font-bold leading-[1.05] tracking-[-0.04em] text-[#EAF0FF] sm:text-[2.75rem] lg:text-[3.25rem]">
+            <h2 className="text-[2.25rem] font-bold leading-[1.05] tracking-[-0.04em] text-[#F6F6FB] sm:text-[2.75rem] lg:text-[3.25rem]">
               Convierte una búsqueda
               <br />
-              <span className="text-[#29D9FF]">en una decisión.</span>
+              <span className="bg-linear-to-r from-[#CABEFF] to-[#FF9CC4] bg-clip-text text-transparent">
+                en una decisión.
+              </span>
             </h2>
           </motion.div>
 
@@ -61,9 +65,9 @@ export default function HowItWorks() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.01 }}
             transition={{ duration: 0.7, delay: 0.1, ease: SOFT_EASE }}
-            className="max-w-md border-l-2 border-[#2F6BFF]/40 pl-5 lg:mt-2"
+            className="max-w-md border-l-2 border-[#CABEFF]/50 pl-5 lg:mt-2"
           >
-            <p className="text-[15px] font-medium leading-7 text-[#EAF0FF]">
+            <p className="text-[15px] font-medium leading-7 text-[#E6E4F2]">
               Un flujo continuo conecta la información biológica con el espacio
               molecular y termina en un ranking de candidatos.
             </p>
@@ -76,10 +80,15 @@ export default function HowItWorks() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.01 }}
           transition={{ duration: 0.8, ease: SOFT_EASE }}
-          className="relative mt-10 overflow-hidden rounded-2xl border border-[#101A48] bg-[#01030A]"
+          className="relative mt-10 overflow-hidden rounded-2xl border border-white/10 bg-[#0E0E15]"
         >
-          <div className="flex items-center justify-between border-b border-[#101A48] px-5 py-3.5">
-            <span className="font-mono text-[12px] tracking-wide text-[#DCE6FF]">
+          <div className="flex items-center gap-3 border-b border-white/10 px-5 py-3.5">
+            <span className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-[#FFA0C4]" />
+              <span className="h-2 w-2 rounded-full bg-[#FFC066]" />
+              <span className="h-2 w-2 rounded-full bg-[#C4F54D]" />
+            </span>
+            <span className="font-mono text-[12px] tracking-wide text-[#C4C3D8]">
               drugtarget / analysis
             </span>
           </div>
@@ -91,27 +100,27 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.01 }}
               transition={{ duration: 0.7, delay: 0.05, ease: SOFT_EASE }}
-              className="border-b border-[#101A48] p-6 md:border-b-0 md:border-r"
+              className="border-b border-white/10 p-6 md:border-b-0 md:border-r"
             >
               <div className="mb-6 flex items-center justify-between">
-                <span className="text-[15px] font-semibold text-[#EAF0FF]">
+                <span className="text-[15px] font-semibold text-[#F6F6FB]">
                   Proteína objetivo
                 </span>
-                <span className="font-mono text-[12px] text-[#29D9FF]">
+                <span className="font-mono text-[12px] font-semibold text-[#FFA0C4]">
                   PDB 4HHB
                 </span>
               </div>
 
-              <div className="flex items-center gap-3.5 rounded-xl border border-[#101A48] bg-[#02040C] p-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#29D9FF]/10">
-                  <Dna className="h-5 w-5 text-[#29D9FF]" />
+              <div className="flex items-center gap-3.5 rounded-xl border border-white/10 bg-[#0A0A10] p-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-[#FF7FB0] to-[#E8458A]">
+                  <Dna className="h-5 w-5 text-white" />
                 </div>
 
                 <div className="min-w-0">
-                  <p className="text-[16px] font-semibold text-[#EAF0FF]">
+                  <p className="text-[16px] font-semibold text-[#F6F6FB]">
                     Hemoglobin
                   </p>
-                  <p className="mt-0.5 font-mono text-[12px] text-[#DCE6FF]">
+                  <p className="mt-0.5 font-mono text-[12px] text-[#C4C3D8]">
                     574 residues
                   </p>
                 </div>
@@ -119,17 +128,17 @@ export default function HowItWorks() {
 
               <div className="mt-6 space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[13px] text-[#DCE6FF]">
+                  <span className="text-[13px] text-[#C4C3D8]">
                     biological target
                   </span>
-                  <span className="font-mono text-[12px] font-medium text-[#EAF0FF]">
+                  <span className="font-mono text-[12px] font-semibold text-[#F6F6FB]">
                     verified
                   </span>
                 </div>
-                <div className="h-px bg-[#101A48]" />
+                <div className="h-px bg-white/10" />
                 <div className="flex items-center justify-between">
-                  <span className="text-[13px] text-[#DCE6FF]">structure</span>
-                  <span className="font-mono text-[12px] font-medium text-[#EAF0FF]">
+                  <span className="text-[13px] text-[#C4C3D8]">structure</span>
+                  <span className="font-mono text-[12px] font-semibold text-[#F6F6FB]">
                     resolved
                   </span>
                 </div>
@@ -142,13 +151,13 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.01 }}
               transition={{ duration: 0.7, delay: 0.15, ease: SOFT_EASE }}
-              className="border-b border-[#101A48] p-6 md:border-b-0 md:border-r"
+              className="border-b border-white/10 p-6 md:border-b-0 md:border-r"
             >
               <div className="mb-6 flex items-center justify-between">
-                <span className="text-[15px] font-semibold text-[#EAF0FF]">
+                <span className="text-[15px] font-semibold text-[#F6F6FB]">
                   Candidatos moleculares
                 </span>
-                <span className="font-mono text-[12px] text-[#DCE6FF]">
+                <span className="font-mono text-[12px] font-semibold text-[#CABEFF]">
                   2,481 compounds
                 </span>
               </div>
@@ -166,13 +175,13 @@ export default function HowItWorks() {
                         delay: 0.25 + i * 0.06,
                       }}
                       className="
-                        rounded-md border border-[#101A48]
-                        bg-[#02040C]
-                        py-3 text-center font-mono text-[12px] font-medium
-                        text-[#EAF0FF]
+                        rounded-md border border-white/10
+                        bg-[#0A0A10]
+                        py-3 text-center font-mono text-[12px] font-semibold
+                        text-[#F6F6FB]
                         transition-colors duration-300
-                        hover:border-[#29D9FF]/50
-                        hover:text-[#29D9FF]
+                        hover:border-[#CABEFF]/60
+                        hover:bg-[#CABEFF]/10
                       "
                     >
                       {smiles}
@@ -183,19 +192,19 @@ export default function HowItWorks() {
 
               <div className="mt-6 space-y-3.5">
                 <div className="flex items-center justify-between">
-                  <span className="text-[13px] text-[#DCE6FF]">
+                  <span className="text-[13px] text-[#C4C3D8]">
                     loaded via SMILES
                   </span>
-                  <span className="font-mono text-[12px] font-medium text-[#EAF0FF]">
+                  <span className="font-mono text-[12px] font-semibold text-[#F6F6FB]">
                     ok
                   </span>
                 </div>
-                <div className="h-px bg-[#101A48]" />
+                <div className="h-px bg-white/10" />
                 <div className="flex items-center justify-between">
-                  <span className="text-[13px] text-[#DCE6FF]">
+                  <span className="text-[13px] text-[#C4C3D8]">
                     preparation
                   </span>
-                  <span className="font-mono text-[12px] font-medium text-[#EAF0FF]">
+                  <span className="font-mono text-[12px] font-semibold text-[#F6F6FB]">
                     complete
                   </span>
                 </div>
@@ -212,8 +221,8 @@ export default function HowItWorks() {
             >
               <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <ScanSearch className="h-4 w-4 text-[#29D9FF]" />
-                  <span className="text-[15px] font-semibold text-[#EAF0FF]">
+                  <ScanSearch className="h-4 w-4 text-[#CABEFF]" />
+                  <span className="text-[15px] font-semibold text-[#F6F6FB]">
                     Afinidad predicha
                   </span>
                 </div>
@@ -225,39 +234,39 @@ export default function HowItWorks() {
                   score="0.94"
                   rank="01"
                   best
-                  accent="#29D9FF"
+                  accent="#C4F54D"
                   delay={0.4}
                 />
                 <ResultRow
                   name="Molecule_427"
                   score="0.89"
                   rank="02"
-                  accent="#7DD87D"
+                  accent="#CABEFF"
                   delay={0.55}
                 />
                 <ResultRow
                   name="Molecule_093"
                   score="0.82"
                   rank="03"
-                  accent="#FFB347"
+                  accent="#FFC066"
                   delay={0.7}
                 />
               </div>
 
-              <div className="mt-6 flex items-center justify-between border-t border-[#101A48] pt-4">
+              <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4">
                 <div className="flex items-center gap-2">
-                  <Database className="h-3.5 w-3.5 text-[#DCE6FF]/70" />
-                  <span className="font-mono text-[11px] tracking-wide text-[#DCE6FF]">
+                  <Database className="h-3.5 w-3.5 text-[#C4C3D8]" />
+                  <span className="font-mono text-[11px] tracking-wide text-[#C4C3D8]">
                     model inference
                   </span>
                 </div>
-                <FlaskConical className="h-4 w-4 text-[#DCE6FF]/50" />
+                <FlaskConical className="h-4 w-4 text-[#C4C3D8]" />
               </div>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Pasos rediseñados */}
+        {/* Pasos */}
         <div className="relative mt-10">
           {/* Riel segmentado entre pasos (solo desktop) */}
           <div className="pointer-events-none absolute inset-x-0 top-6 hidden grid-cols-3 gap-4 lg:grid">
@@ -287,20 +296,20 @@ export default function HowItWorks() {
                   <div className="relative mb-4 flex justify-center lg:justify-start lg:pl-0">
                     <motion.div
                       className={`
-                        relative z-10 flex h-12 w-12 items-center justify-center rounded-xl border bg-[#02040C]
+                        relative z-10 flex h-12 w-12 items-center justify-center rounded-xl
                         ${
                           isActive
-                            ? "border-[#29D9FF]"
-                            : "border-[#101A48] transition-colors group-hover:border-[#29D9FF]/40"
+                            ? "bg-linear-to-br from-[#A48BFF] to-[#6D4AF2]"
+                            : "border border-white/15 bg-[#14141C] transition-colors group-hover:border-[#CABEFF]/60"
                         }
                       `}
                       animate={
                         isActive
                           ? {
                               boxShadow: [
-                                "0 0 0 0 rgba(41,217,255,0)",
-                                "0 0 0 8px rgba(41,217,255,0.15)",
-                                "0 0 0 0 rgba(41,217,255,0)",
+                                "0 0 0 0 rgba(164,139,255,0)",
+                                "0 0 0 8px rgba(164,139,255,0.16)",
+                                "0 0 0 0 rgba(164,139,255,0)",
                               ],
                             }
                           : {}
@@ -318,8 +327,8 @@ export default function HowItWorks() {
                       <Icon
                         className={`h-5 w-5 ${
                           isActive
-                            ? "text-[#29D9FF]"
-                            : "text-[#DCE6FF] transition-colors group-hover:text-[#29D9FF]"
+                            ? "text-white"
+                            : "text-[#E6E4F2] transition-colors group-hover:text-[#CABEFF]"
                         }`}
                       />
                     </motion.div>
@@ -327,11 +336,11 @@ export default function HowItWorks() {
 
                   <div
                     className={`
-                      relative overflow-hidden rounded-xl border bg-linear-to-b from-[#01030A] to-[#02040C] p-5 transition-colors
+                      relative overflow-hidden rounded-xl border bg-linear-to-b from-[#12121A] to-[#0C0C12] p-5 transition-colors
                       ${
                         isActive
-                          ? "border-[#29D9FF]/40"
-                          : "border-[#101A48] group-hover:border-[#29D9FF]/40"
+                          ? "border-[#CABEFF]/45"
+                          : "border-white/10 group-hover:border-[#CABEFF]/45"
                       }
                     `}
                   >
@@ -340,17 +349,17 @@ export default function HowItWorks() {
                         absolute inset-x-0 top-0 h-0.5 transition-opacity
                         ${
                           isActive
-                            ? "bg-linear-to-r from-transparent via-[#29D9FF] to-transparent opacity-100"
-                            : "bg-linear-to-r from-transparent via-[#2F6BFF]/50 to-transparent opacity-0 group-hover:opacity-100"
+                            ? "bg-linear-to-r from-transparent via-[#CABEFF] to-transparent opacity-100"
+                            : "bg-linear-to-r from-transparent via-[#CABEFF]/60 to-transparent opacity-0 group-hover:opacity-100"
                         }
                       `}
                     />
 
-                    <h3 className="text-[16px] font-semibold text-[#EAF0FF]">
+                    <h3 className="text-[16px] font-semibold text-[#F6F6FB]">
                       {step.title}
                     </h3>
 
-                    <p className="mt-2.5 text-[13.5px] leading-6 text-[#DCE6FF]">
+                    <p className="mt-2.5 text-[13.5px] leading-6 text-[#D0CFE0]">
                       {step.description}
                     </p>
                   </div>
@@ -375,11 +384,11 @@ function SegmentedRail({ delay = 0 }) {
           className="h-0.75 w-2 rounded-sm"
           animate={{
             backgroundColor: [
-              "#2F6BFF40",
-              "#2F6BFF40",
-              "#29D9FF",
-              "#2F6BFF40",
-              "#2F6BFF40",
+              "#8E74FF40",
+              "#8E74FF40",
+              "#CABEFF",
+              "#8E74FF40",
+              "#8E74FF40",
             ],
           }}
           transition={{
@@ -405,19 +414,19 @@ function ResultRow({ name, score, rank, best = false, delay = 0, accent }) {
       transition={{ duration: 0.55, delay, ease: SOFT_EASE }}
       className="flex items-center gap-3"
     >
-      <span className="w-6 shrink-0 font-mono text-[12px] text-[#DCE6FF]">
+      <span className="w-6 shrink-0 font-mono text-[12px] font-semibold text-[#C4C3D8]">
         {rank}
       </span>
 
       <span
         className={`w-28 truncate font-mono text-[13px] ${
-          best ? "font-semibold text-[#EAF0FF]" : "text-[#DCE6FF]"
+          best ? "font-semibold text-[#F6F6FB]" : "text-[#D0CFE0]"
         }`}
       >
         {name}
       </span>
 
-      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#0E1330]">
+      <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
         <motion.div
           className="h-full rounded-full"
           style={{ backgroundColor: accent }}
@@ -428,7 +437,7 @@ function ResultRow({ name, score, rank, best = false, delay = 0, accent }) {
         />
       </div>
 
-      <span className="w-10 text-right font-mono text-[13px] font-semibold text-[#EAF0FF]">
+      <span className="w-10 text-right font-mono text-[13px] font-semibold text-[#F6F6FB]">
         {score}
       </span>
     </motion.div>
