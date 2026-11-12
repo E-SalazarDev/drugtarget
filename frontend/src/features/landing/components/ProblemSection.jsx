@@ -28,8 +28,11 @@ export default function ProblemSection() {
   return (
     <section
       id="problema"
-      className="relative w-full overflow-hidden bg-[#02040C] px-5 py-20 sm:px-8 lg:px-12 xl:px-16"
+      className="relative w-full overflow-hidden px-5 py-24 sm:px-8 lg:px-12 xl:px-16"
     >
+      {/* Línea de separación con el hero */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/15 to-transparent" />
+
       <div className="relative mx-auto max-w-375">
         {/* Encabezado */}
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between lg:gap-12">
@@ -40,10 +43,14 @@ export default function ProblemSection() {
             transition={{ duration: 0.7, ease: SOFT_EASE }}
             className="max-w-2xl"
           >
-            <h2 className="text-[2.25rem] font-bold leading-[1.05] tracking-[-0.04em] text-[#EAF0FF] sm:text-[2.75rem] lg:text-[3.25rem]">
+            <h2 className="text-[2.25rem] font-bold leading-[1.05] tracking-[-0.04em] text-[#F6F6FB] sm:text-[2.75rem] lg:text-[3.25rem]">
               Menos ensayo.
               <br />
-              Más <span className="text-[#29D9FF]">criterio</span>.
+              Más{" "}
+              <span className="bg-linear-to-r from-[#CABEFF] to-[#FF9CC4] bg-clip-text text-transparent">
+                criterio
+              </span>
+              .
             </h2>
           </motion.div>
 
@@ -52,9 +59,9 @@ export default function ProblemSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.01 }}
             transition={{ duration: 0.7, delay: 0.1, ease: SOFT_EASE }}
-            className="max-w-md border-l-2 border-[#2F6BFF]/40 pl-5 lg:mt-2"
+            className="max-w-md border-l-2 border-[#CABEFF]/50 pl-5 lg:mt-2"
           >
-            <p className="text-[15px] font-medium leading-7 text-[#EAF0FF]">
+            <p className="text-[15px] font-medium leading-7 text-[#E6E4F2]">
               El descubrimiento de candidatos suele empezar con una búsqueda
               enorme que después debe pasar por síntesis y validación
               experimental.
@@ -62,7 +69,7 @@ export default function ProblemSection() {
           </motion.div>
         </div>
 
-        {/* Comparación asimétrica 40/60 */}
+        {/* Comparación asimétrica */}
         <div className="mt-12 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-stretch">
           {/* Convencional */}
           <motion.div
@@ -70,16 +77,16 @@ export default function ProblemSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.01 }}
             transition={{ duration: 0.8, ease: SOFT_EASE }}
-            className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#101A48] bg-[#01030A]"
+            className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0E0E15]"
           >
             <div className="flex items-center justify-between px-5 py-4">
               <div className="flex items-center gap-2.5">
-                <FlaskConical className="h-4 w-4 text-[#8A7CFF]" />
-                <span className="text-[14px] font-semibold text-[#EAF0FF]">
+                <FlaskConical className="h-4 w-4 text-[#FFC066]" />
+                <span className="text-[14px] font-semibold text-[#F6F6FB]">
                   Flujo convencional
                 </span>
               </div>
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[#EAF0FF]/70">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-[#B9B8CE]">
                 validación primero
               </span>
             </div>
@@ -92,36 +99,46 @@ export default function ProblemSection() {
               </div>
 
               <div className="mt-auto flex items-start gap-2 pt-6">
-                <TrendingDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#8A7CFF]" />
-                <span className="text-[13.5px] leading-5 text-[#DCE6FF]">
+                <TrendingDown className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#FFC066]" />
+                <span className="text-[13.5px] leading-5 text-[#D0CFE0]">
                   Cada candidato se prueba en el laboratorio, uno por uno.
                 </span>
               </div>
             </div>
           </motion.div>
 
-          {/* DrugTarget */}
+          {/* DrugTarget: tarjeta destacada con brillo violeta suave */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.01 }}
             transition={{ duration: 0.8, delay: 0.1, ease: SOFT_EASE }}
-            className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#29D9FF]/40 bg-[#01030A]"
+            className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#CABEFF]/35 bg-[#0E0E15]"
           >
-            <div className="flex items-center justify-between px-6 py-4">
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(70% 90% at 100% 0%, rgba(124,92,255,0.20) 0%, transparent 62%)",
+              }}
+            />
+
+            <div className="relative flex items-center justify-between px-6 py-4">
               <div className="flex items-center gap-2.5">
-                <Zap className="h-5 w-5 text-[#29D9FF]" />
-                <span className="text-[15px] font-semibold text-[#EAF0FF]">
+                <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-linear-to-br from-[#A48BFF] to-[#6D4AF2]">
+                  <Zap className="h-4 w-4 text-white" />
+                </span>
+                <span className="text-[15px] font-semibold text-[#F6F6FB]">
                   Con DrugTarget
                 </span>
               </div>
-              <span className="font-mono text-[11px] uppercase tracking-widest text-[#EAF0FF]/70">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-[#D0CFE0]">
                 prediction first
               </span>
             </div>
 
-            <div className="flex flex-1 flex-col p-6 pt-2">
-              <p className="mb-6 max-w-lg text-[14.5px] leading-7 text-[#DCE6FF]">
+            <div className="relative flex flex-1 flex-col p-6 pt-2">
+              <p className="mb-6 max-w-lg text-[14.5px] leading-7 text-[#DAD9EA]">
                 El modelo estima la afinidad de cada candidato antes de tocar
                 el laboratorio. Solo los mejor rankeados pasan a validación
                 experimental.
@@ -136,8 +153,8 @@ export default function ProblemSection() {
               </div>
 
               <div className="mt-auto flex items-start gap-2 pt-6">
-                <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#29D9FF]" />
-                <span className="text-[13.5px] leading-5 text-[#DCE6FF]">
+                <Sparkles className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#CABEFF]" />
+                <span className="text-[13.5px] leading-5 text-[#D0CFE0]">
                   Solo los candidatos priorizados llegan al laboratorio.
                 </span>
               </div>
@@ -151,22 +168,22 @@ export default function ProblemSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.01 }}
           transition={{ duration: 0.7, ease: SOFT_EASE }}
-          className="mt-10 overflow-hidden rounded-2xl border border-[#101A48] bg-[#01030A]"
+          className="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-[#0E0E15]"
         >
           <div className="p-6 sm:p-7">
-            <p className="text-[16px] font-medium leading-7 text-[#EAF0FF]">
+            <p className="text-[16px] font-medium leading-7 text-[#F6F6FB]">
               La predicción no reemplaza la validación experimental.
-              <span className="text-[#DCE6FF]">
+              <span className="text-[#C4C3D8]">
                 {" "}
                 Ayuda a decidir qué candidatos merece la pena evaluar primero.
               </span>
             </p>
           </div>
 
-          <div className="border-t border-[#101A48] px-6 py-5 sm:px-7">
+          <div className="border-t border-white/10 px-6 py-5 sm:px-7">
             <div className="mb-5 flex items-center gap-2.5">
-              <Workflow className="h-3.5 w-3.5 text-[#29D9FF]" />
-              <span className="text-[12px] font-medium uppercase tracking-[0.14em] text-[#DCE6FF]/70">
+              <Workflow className="h-3.5 w-3.5 text-[#CABEFF]" />
+              <span className="text-[12px] font-semibold uppercase tracking-[0.14em] text-[#C4C3D8]">
                 Proceso de decisión
               </span>
             </div>
@@ -185,9 +202,9 @@ function InlineDots({ delay = 0 }) {
       {Array.from({ length: INLINE_DOTS }).map((_, i) => (
         <motion.span
           key={i}
-          className="h-1.5 w-1.5 rounded-full bg-[#29D9FF]"
+          className="h-1.5 w-1.5 rounded-full bg-[#CABEFF]"
           animate={{
-            opacity: [0.15, 0.9, 0.15],
+            opacity: [0.2, 0.95, 0.2],
             scale: [0.8, 1.1, 0.8],
           }}
           transition={{
@@ -244,18 +261,11 @@ function FlowItem({ index, label, phase, active, completed }) {
 
   return (
     <>
-      {index > 0 && (
-        <Dots
-          filling={active}
-          completed={completed || active}
-        />
-      )}
+      {index > 0 && <Dots filling={active} completed={completed || active} />}
 
       <motion.div
         className="relative shrink-0"
-        animate={{
-          scale: active ? 1.08 : 1,
-        }}
+        animate={{ scale: active ? 1.08 : 1 }}
         transition={{
           type: "spring",
           stiffness: 220,
@@ -265,18 +275,16 @@ function FlowItem({ index, label, phase, active, completed }) {
       >
         <motion.div
           className={`
-            rounded-md border px-4 py-2.5 text-[13.5px] font-medium
+            rounded-md border px-4 py-2.5 text-[13.5px] font-semibold
             ${
               active
-                ? "border-[#29D9FF] bg-[#29D9FF]/8 text-[#EAF0FF]"
+                ? "border-[#CABEFF] bg-[#CABEFF] text-[#14102B]"
                 : completed
-                ? "border-[#29D9FF]/40 bg-[#29D9FF]/3 text-[#EAF0FF]/85"
-                : "border-[#101A48] bg-transparent text-[#DCE6FF]/60"
+                ? "border-[#CABEFF]/50 bg-[#CABEFF]/10 text-[#F6F6FB]"
+                : "border-white/15 bg-transparent text-[#D0CFE0]"
             }
           `}
-          animate={{
-            opacity: active ? 1 : completed ? 0.95 : 0.55,
-          }}
+          animate={{ opacity: active ? 1 : completed ? 0.95 : 0.7 }}
           transition={{
             duration: 0.5,
             ease: SOFT_EASE,
@@ -289,11 +297,11 @@ function FlowItem({ index, label, phase, active, completed }) {
         {active && (
           <motion.span
             className="pointer-events-none absolute inset-0 rounded-md"
-            initial={{ boxShadow: "0 0 0 0 rgba(41,217,255,0)" }}
+            initial={{ boxShadow: "0 0 0 0 rgba(202,190,255,0)" }}
             animate={{
               boxShadow: [
-                "0 0 0 0 rgba(41,217,255,0.35)",
-                "0 0 0 12px rgba(41,217,255,0)",
+                "0 0 0 0 rgba(202,190,255,0.30)",
+                "0 0 0 10px rgba(202,190,255,0)",
               ],
             }}
             transition={{
@@ -323,14 +331,9 @@ function Dots({ filling, completed }) {
             key={i}
             className="h-2 w-2 rounded-full"
             animate={{
-              backgroundColor: lit ? "#29D9FF" : "#1C3EB0",
+              backgroundColor: lit ? "#CABEFF" : "#3A3560",
               scale: lit ? 1 : 0.7,
-              opacity: isHistorical ? 0.55 : 1,
-              boxShadow: lit
-                ? isHistorical
-                  ? "0 0 4px rgba(41,217,255,0.35)"
-                  : "0 0 8px rgba(41,217,255,0.9)"
-                : "0 0 0 rgba(41,217,255,0)",
+              opacity: isHistorical ? 0.6 : 1,
             }}
             transition={{
               duration: filling ? DOT_DURATION : 0.6,
@@ -349,18 +352,22 @@ function FlowStep({ icon, label, tone = "cool" }) {
   return (
     <div
       className={`
-        flex min-w-0 flex-1 items-center gap-2 rounded-lg border px-3 py-3
+        flex min-w-0 flex-1 items-center gap-2.5 rounded-lg border px-3 py-3
         ${
           isCool
-            ? "border-[#29D9FF]/40 bg-[#29D9FF]/5"
-            : "border-[#8A7CFF]/40 bg-[#8A7CFF]/5"
+            ? "border-[#CABEFF]/40 bg-[#CABEFF]/8"
+            : "border-[#FFC066]/30 bg-[#FFC066]/6"
         }
       `}
     >
-      <span className={isCool ? "text-[#29D9FF]" : "text-[#8A7CFF]"}>
+      <span
+        className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md text-[#14102B] ${
+          isCool ? "bg-[#CABEFF]" : "bg-[#FFC066]"
+        }`}
+      >
         {icon}
       </span>
-      <span className="truncate text-[13.5px] font-medium text-[#EAF0FF]">
+      <span className="truncate text-[13.5px] font-semibold text-[#F6F6FB]">
         {label}
       </span>
     </div>
