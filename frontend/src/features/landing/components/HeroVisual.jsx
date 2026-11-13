@@ -2,6 +2,9 @@
 import { useEffect, useRef, useState } from "react";
 import helixVideo from "../../../assets/hero-helix-3.mp4";
 
+// Color base de los difuminados laterales (negro violáceo, igual que el fondo)
+const BASE = "8,8,12";
+
 export default function HeroVisual() {
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
@@ -92,6 +95,8 @@ export default function HeroVisual() {
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden">
       <div className="absolute inset-0">
+        {/* Video en bucle. El hue-rotate lo acerca al violeta de la plataforma
+            (si lo quieres con su azul original, quita "hue-rotate(28deg)") */}
         <video
           ref={videoRef}
           src={helixVideo}
@@ -103,7 +108,8 @@ export default function HeroVisual() {
           className="absolute inset-0 h-full w-full object-cover"
           style={{
             objectPosition: "62% 45%",
-            filter: "brightness(0.95) contrast(1.1) saturate(0.9)",
+            filter:
+              "brightness(0.98) contrast(1.1) saturate(0.95) hue-rotate(28deg)",
             opacity: ready ? 1 : 0,
             transition: "opacity 1600ms ease-out",
           }}
@@ -117,11 +123,11 @@ export default function HeroVisual() {
             transition: "opacity 1800ms ease-out",
             background: `
               linear-gradient(to right,
-                rgba(2,4,12,1) 0%,
-                rgba(2,4,12,0.98) 18%,
-                rgba(2,4,12,0.92) 32%,
-                rgba(2,4,12,0.7) 48%,
-                rgba(2,4,12,0.25) 65%,
+                rgba(${BASE},1) 0%,
+                rgba(${BASE},0.98) 18%,
+                rgba(${BASE},0.92) 32%,
+                rgba(${BASE},0.7) 48%,
+                rgba(${BASE},0.25) 65%,
                 transparent 80%
               )
             `,
@@ -135,7 +141,7 @@ export default function HeroVisual() {
             opacity: ready ? 1 : 0,
             transition: "opacity 1800ms ease-out",
             background: `
-              radial-gradient(ellipse 55% 100% at 22% 55%, rgba(2,4,12,0.9) 0%, rgba(2,4,12,0.55) 45%, transparent 75%)
+              radial-gradient(ellipse 55% 100% at 22% 55%, rgba(${BASE},0.9) 0%, rgba(${BASE},0.55) 45%, transparent 75%)
             `,
           }}
         />
@@ -146,19 +152,18 @@ export default function HeroVisual() {
           style={{
             opacity: ready ? 1 : 0,
             transition: "opacity 1800ms ease-out",
-            background:
-              "radial-gradient(ellipse 20% 50% at 96% 55%, rgba(2,4,12,0.85) 0%, rgba(2,4,12,0.4) 40%, transparent 70%)",
+            background: `radial-gradient(ellipse 20% 50% at 96% 55%, rgba(${BASE},0.85) 0%, rgba(${BASE},0.4) 40%, transparent 70%)`,
           }}
         />
 
-        {/* Halos difusos: cobalto, violeta y azul profundo */}
+        {/* Halos difusos: violeta y rosa suave */}
         <div
           className="absolute inset-0 mix-blend-screen"
           style={{
-            opacity: ready ? 0.11 : 0,
+            opacity: ready ? 0.12 : 0,
             transition: "opacity 2400ms ease-out",
             background:
-              "radial-gradient(ellipse 42% 52% at 14% 28%, rgba(47,107,255,0.75) 0%, transparent 68%)",
+              "radial-gradient(ellipse 42% 52% at 14% 28%, rgba(124,92,255,0.8) 0%, transparent 68%)",
           }}
         />
         <div
@@ -167,16 +172,16 @@ export default function HeroVisual() {
             opacity: ready ? 0.1 : 0,
             transition: "opacity 2400ms ease-out 200ms",
             background:
-              "radial-gradient(ellipse 38% 48% at 78% 42%, rgba(138,124,255,0.5) 0%, transparent 72%)",
+              "radial-gradient(ellipse 38% 48% at 78% 42%, rgba(176,150,255,0.55) 0%, transparent 72%)",
           }}
         />
         <div
           className="absolute inset-0 mix-blend-screen"
           style={{
-            opacity: ready ? 0.09 : 0,
+            opacity: ready ? 0.08 : 0,
             transition: "opacity 2400ms ease-out 400ms",
             background:
-              "radial-gradient(ellipse 32% 42% at 92% 78%, rgba(47,107,255,0.45) 0%, transparent 70%)",
+              "radial-gradient(ellipse 32% 42% at 92% 78%, rgba(255,120,170,0.5) 0%, transparent 70%)",
           }}
         />
         <div
@@ -185,7 +190,7 @@ export default function HeroVisual() {
             opacity: ready ? 0.08 : 0,
             transition: "opacity 2400ms ease-out 600ms",
             background:
-              "radial-gradient(ellipse 30% 38% at 88% 18%, rgba(138,124,255,0.55) 0%, transparent 72%)",
+              "radial-gradient(ellipse 30% 38% at 88% 18%, rgba(176,150,255,0.6) 0%, transparent 72%)",
           }}
         />
         <div
@@ -194,11 +199,12 @@ export default function HeroVisual() {
             opacity: ready ? 0.06 : 0,
             transition: "opacity 2400ms ease-out 800ms",
             background:
-              "radial-gradient(ellipse 26% 34% at 62% 88%, rgba(47,107,255,0.4) 0%, transparent 75%)",
+              "radial-gradient(ellipse 26% 34% at 62% 88%, rgba(124,92,255,0.5) 0%, transparent 75%)",
           }}
         />
       </div>
 
+      {/* Partículas */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 z-2"
@@ -220,9 +226,9 @@ export default function HeroVisual() {
 
 function MetricsPanel({ ready }) {
   const metrics = [
-    { label: "Predicción", value: "pKd 7.2", note: "afinidad" },
-    { label: "Dataset", value: "68 × 378", note: "moléculas · dianas" },
-    { label: "Modelo", value: "CI 0.85", note: "concordance" },
+    { label: "Predicción", value: "pKd 7.2", note: "afinidad", dot: "bg-[#CABEFF]" },
+    { label: "Dataset", value: "68 × 378", note: "moléculas · dianas", dot: "bg-[#FFA0C4]" },
+    { label: "Modelo", value: "CI 0.85", note: "concordance", dot: "bg-[#C4F54D]" },
   ];
 
   return (
@@ -237,10 +243,10 @@ function MetricsPanel({ ready }) {
       }}
     >
       <div
-        className="rounded-xl border border-[#101A48] p-5"
+        className="rounded-xl border border-white/15 p-5"
         style={{
           background:
-            "linear-gradient(135deg, rgba(2,4,12,0.75) 0%, rgba(2,4,12,0.55) 100%)",
+            "linear-gradient(135deg, rgba(14,14,22,0.82) 0%, rgba(10,10,16,0.62) 100%)",
           backdropFilter: "blur(20px)",
           WebkitBackdropFilter: "blur(20px)",
         }}
@@ -248,13 +254,14 @@ function MetricsPanel({ ready }) {
         <div className="space-y-6">
           {metrics.map((m) => (
             <div key={m.label} className="flex flex-col gap-1.5">
-              <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#29D9FF]">
+              <span className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#D0CFE0]">
+                <span className={`h-1.5 w-1.5 rounded-full ${m.dot}`} />
                 {m.label}
               </span>
-              <span className="text-[22px] font-bold leading-none tracking-[-0.02em] text-[#EAF0FF] tabular-nums">
+              <span className="text-[22px] font-bold leading-none tracking-[-0.02em] text-white tabular-nums">
                 {m.value}
               </span>
-              <span className="text-[11px] font-medium tracking-wide text-[#DCE6FF]">
+              <span className="text-[11px] font-medium tracking-wide text-[#C4C3D8]">
                 {m.note}
               </span>
             </div>
