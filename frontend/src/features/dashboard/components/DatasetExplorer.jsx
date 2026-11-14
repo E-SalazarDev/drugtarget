@@ -87,7 +87,7 @@ export default function DatasetExplorer() {
 
             <Link
               to="/app/molecules"
-              className="group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-[var(--hover-overlay)]"
+              className="group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-(--hover-overlay)"
               style={{
                 color: "var(--link)",
                 border: "1px solid var(--icon-box-border)",
@@ -187,7 +187,7 @@ export default function DatasetExplorer() {
 
             <Link
               to="/app/proteins"
-              className="group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-[var(--hover-overlay)]"
+              className="group flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-(--hover-overlay)"
               style={{
                 color: "var(--link)",
                 border: "1px solid var(--icon-box-border)",
