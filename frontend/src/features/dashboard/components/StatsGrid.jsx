@@ -1,6 +1,5 @@
 import { motion } from "motion/react";
 import { Atom, Dna, BrainCircuit, TrendingUp } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
 
 /**
  * Sparkline SVG — mini gráfico de tendencia.
@@ -46,14 +45,6 @@ export default function StatsGrid({
   proteinsCount = 378,
   predictionsReady = false,
 }) {
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
-
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
-  const cardBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.08)";
-
   // Datos de sparklines (mock)
   const moleculesTrend = [12, 18, 24, 30, 38, 48, 58, 68];
   const proteinsTrend = [45, 98, 156, 210, 268, 318, 355, 378];
@@ -65,13 +56,9 @@ export default function StatsGrid({
       value: moleculesCount,
       note: "Compuestos disponibles",
       icon: Atom,
-      color: isDark ? "#22D3E6" : "#0A7C85",
-      colorSoft: isDark
-        ? "rgba(34, 211, 230, 0.10)"
-        : "rgba(10, 124, 133, 0.08)",
-      colorBorder: isDark
-        ? "rgba(34, 211, 230, 0.20)"
-        : "rgba(10, 124, 133, 0.20)",
+      color: "var(--accent-cyan)",
+      colorSoft: "var(--chip-lilac-bg)",
+      colorBorder: "transparent",
       trend: moleculesTrend,
       delta: "+12",
       deltaLabel: "esta semana",
@@ -82,13 +69,9 @@ export default function StatsGrid({
       value: proteinsCount,
       note: "Dianas disponibles",
       icon: Dna,
-      color: isDark ? "#A78BFA" : "#7C3AED",
-      colorSoft: isDark
-        ? "rgba(167, 139, 250, 0.10)"
-        : "rgba(124, 58, 237, 0.08)",
-      colorBorder: isDark
-        ? "rgba(167, 139, 250, 0.20)"
-        : "rgba(124, 58, 237, 0.20)",
+      color: "var(--accent-violet)",
+      colorSoft: "var(--chip-pink-bg)",
+      colorBorder: "transparent",
       trend: proteinsTrend,
       delta: "+23",
       deltaLabel: "esta semana",
@@ -97,31 +80,13 @@ export default function StatsGrid({
     {
       label: "Predicciones",
       value: predictionsReady ? "Listo" : "—",
-      note: predictionsReady
-        ? "Modelo disponible"
-        : "Modelo en construcción",
+      note: predictionsReady ? "Modelo disponible" : "Modelo en construcción",
       icon: BrainCircuit,
-      color: predictionsReady
-        ? isDark
-          ? "#4ADE80"
-          : "#0A8F4A"
-        : isDark
-        ? "#FBBF24"
-        : "#B45309",
+      color: predictionsReady ? "var(--accent-success)" : "var(--accent-warning)",
       colorSoft: predictionsReady
-        ? isDark
-          ? "rgba(74, 222, 128, 0.10)"
-          : "rgba(10, 143, 74, 0.08)"
-        : isDark
-        ? "rgba(251, 191, 36, 0.10)"
-        : "rgba(180, 83, 9, 0.08)",
-      colorBorder: predictionsReady
-        ? isDark
-          ? "rgba(74, 222, 128, 0.20)"
-          : "rgba(10, 143, 74, 0.20)"
-        : isDark
-        ? "rgba(251, 191, 36, 0.20)"
-        : "rgba(180, 83, 9, 0.20)",
+        ? "var(--chip-lime-bg)"
+        : "var(--chip-amber-bg)",
+      colorBorder: "transparent",
       trend: predictionsReady ? [0, 10, 25, 40, 55] : predictionsTrend,
       delta: null,
       deltaLabel: predictionsReady ? "activas" : "próximamente",
@@ -146,13 +111,17 @@ export default function StatsGrid({
               ease: [0.22, 1, 0.36, 1],
             }}
             className="relative overflow-hidden rounded-2xl p-5"
-            style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+            style={{
+              background: "var(--card-bg)",
+              border: "1px solid var(--card-border)",
+              boxShadow: "var(--shadow-sm)",
+            }}
           >
             {/* Header: label + ícono */}
             <div className="flex items-start justify-between">
               <span
                 className="text-[10.5px] font-bold uppercase tracking-[0.14em]"
-                style={{ color: isDark ? "#9CA3B4" : "#6B7285" }}
+                style={{ color: "var(--text-secondary)" }}
               >
                 {stat.label}
               </span>
@@ -167,7 +136,7 @@ export default function StatsGrid({
                 <Icon
                   size={14}
                   strokeWidth={2.2}
-                  style={{ color: stat.color }}
+                  style={{ color: "var(--chip-text)" }}
                 />
               </div>
             </div>
@@ -177,19 +146,19 @@ export default function StatsGrid({
               <div className="min-w-0">
                 <p
                   className="font-mono text-[28px] font-bold tabular-nums leading-none tracking-[-0.02em]"
-                  style={{ color: isDark ? "#FFFFFF" : "#0A0F24" }}
+                  style={{ color: "var(--text-primary)" }}
                 >
                   {stat.value}
                 </p>
                 <p
                   className="mt-2 text-[11.5px]"
-                  style={{ color: isDark ? "#98A0AB" : "#5A6480" }}
+                  style={{ color: "var(--text-secondary)" }}
                 >
                   {stat.note}
                 </p>
               </div>
 
-              <div className="w-24 shrink-0 opacity-70">
+              <div className="w-24 shrink-0 opacity-80">
                 <Sparkline data={stat.trend} color={stat.color} />
               </div>
             </div>
@@ -197,19 +166,15 @@ export default function StatsGrid({
             {/* Footer: delta + label */}
             <div
               className="mt-4 flex items-center justify-between border-t pt-3"
-              style={{
-                borderColor: isDark
-                  ? "rgba(255, 255, 255, 0.06)"
-                  : "rgba(14, 19, 48, 0.06)",
-              }}
+              style={{ borderColor: "var(--row-border)" }}
             >
               {stat.isUpcoming ? (
                 <span
                   className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
                   style={{
                     background: stat.colorSoft,
-                    color: stat.color,
-                    border: `1px solid ${stat.colorBorder}`,
+                    color: "var(--chip-text)",
+                    border: "1px solid transparent",
                   }}
                 >
                   Próximamente
@@ -226,7 +191,7 @@ export default function StatsGrid({
 
               <span
                 className="text-[10.5px] font-medium uppercase tracking-wider"
-                style={{ color: isDark ? "#7A8494" : "#8A93A4" }}
+                style={{ color: "var(--text-tertiary)" }}
               >
                 {stat.deltaLabel}
               </span>
