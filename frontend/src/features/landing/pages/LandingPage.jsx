@@ -9,10 +9,20 @@ import LandingFooter from "../components/LandingFooter";
 
 export default function LandingPage() {
   return (
-    <main className="relative min-h-screen bg-[#02040C] text-white">
-
+    <main className="relative min-h-screen bg-[#08080C] text-white">
+      {/* Fondo fijo: negro violáceo con resplandores muy suaves */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[#02040C]" />
+        <div className="absolute inset-0 bg-[#08080C]" />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `
+              radial-gradient(900px 520px at 10% -8%, rgba(124, 92, 255, 0.14), transparent 60%),
+              radial-gradient(800px 520px at 100% 55%, rgba(255, 120, 170, 0.05), transparent 60%),
+              radial-gradient(900px 600px at 40% 115%, rgba(124, 92, 255, 0.10), transparent 60%)
+            `,
+          }}
+        />
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
