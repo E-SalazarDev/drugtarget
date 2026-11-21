@@ -2,14 +2,12 @@ import { Link, useParams } from "react-router-dom";
 import { motion } from "motion/react";
 import {
   ArrowLeft,
-  Calendar,
   Trash2,
   FlaskConical,
   ArrowRight,
   Dna,
   Hash,
 } from "lucide-react";
-import { useTheme } from "../../../providers/ThemeProvider";
 import ProteinSequenceViewer from "../components/ProteinSequenceViewer";
 
 const SOFT_EASE = [0.22, 1, 0.36, 1];
@@ -47,22 +45,62 @@ const MOCK_PROTEINS = {
   },
 };
 
+const cardStyle = {
+  background: "var(--card-bg)",
+  border: "1px solid var(--card-border)",
+  boxShadow: "var(--shadow-md)",
+};
+
+const backLinkStyle = {
+  color: "var(--link)",
+  border: "1px solid var(--icon-box-border)",
+  background: "var(--icon-box-bg)",
+};
+
 function shortIdFromSeq(seq) {
   if (!seq) return "PROT-—";
   return `PROT-${seq.slice(0, 6)}`;
 }
 
-// Calcula el peso molecular aproximado (masa media de aminoácidos en Da)
-// Peso medio de un residuo ≈ 110 Da (aproximación estándar para proteínas)
+// Peso molecular aproximado (≈ 110 Da por residuo)
 function estimateWeight(seq) {
   if (!seq) return 0;
   return Math.round(seq.length * 110);
 }
 
+function StatCard({ label, value, note, dot, mono16 = false }) {
+  return (
+    <div className="rounded-xl px-5 py-4" style={cardStyle}>
+      <p
+        className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.14em]"
+        style={{ color: "var(--text-secondary)" }}
+      >
+        <span
+          className="inline-block h-1.5 w-1.5 rounded-full"
+          style={{ background: dot }}
+        />
+        {label}
+      </p>
+      <p
+        className={`mt-2.5 font-mono font-bold tabular-nums leading-none ${
+          mono16 ? "text-[18px]" : "text-[24px]"
+        }`}
+        style={{ color: "var(--text-primary)" }}
+      >
+        {value}
+      </p>
+      <p
+        className="mt-2 text-[12px]"
+        style={{ color: "var(--text-secondary)" }}
+      >
+        {note}
+      </p>
+    </div>
+  );
+}
+
 export default function ProteinDetailPage() {
   const { id } = useParams();
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
   const mock = MOCK_PROTEINS[id];
 
   const protein = mock ?? {
@@ -77,23 +115,6 @@ export default function ProteinDetailPage() {
   const displayName = protein.name || shortIdFromSeq(protein.sequence);
   const weight = estimateWeight(protein.sequence);
 
-  // Colores de alto contraste
-  const nameColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const valueColor = isDark ? "#FFFFFF" : "#0A0F24";
-  const labelColor = isDark ? "#9CA3B4" : "#4A5170";
-  const cardBg = isDark ? "#14171C" : "#FFFFFF";
-  const cardBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.08)";
-
-  const accentViolet = isDark ? "#A78BFA" : "#7C3AED";
-
-  // Pill
-  const pillBg = isDark ? "#0F1219" : "#F5F7FA";
-  const pillBorder = isDark
-    ? "rgba(255, 255, 255, 0.08)"
-    : "rgba(14, 19, 48, 0.06)";
-
   return (
     <div className="space-y-6">
       {/* Volver */}
@@ -104,8 +125,8 @@ export default function ProteinDetailPage() {
       >
         <Link
           to="/app/proteins"
-          className="group inline-flex items-center gap-1.5 text-[12.5px] font-medium transition-opacity hover:opacity-80"
-          style={{ color: "var(--accent)" }}
+          className="group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[12.5px] font-semibold transition-colors hover:bg-(--hover-overlay)"
+          style={backLinkStyle}
         >
           <ArrowLeft
             size={14}
@@ -126,41 +147,34 @@ export default function ProteinDetailPage() {
         <div>
           <h1
             className="text-[36px] font-bold leading-none tracking-[-0.03em] sm:text-[40px]"
-            style={{ color: nameColor }}
+            style={{ color: "var(--text-primary)" }}
           >
             {displayName}
           </h1>
 
-          <div className="mt-3 flex flex-wrap items-center gap-3">
+          <div className="mt-3.5 flex flex-wrap items-center gap-3">
             <span
-              className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[10.5px] font-medium uppercase tracking-wider"
+              className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider"
               style={{
-                background: isDark
-                  ? "rgba(167, 139, 250, 0.12)"
-                  : "rgba(124, 58, 237, 0.10)",
-                color: accentViolet,
-                border: `1px solid ${
-                  isDark
-                    ? "rgba(167, 139, 250, 0.22)"
-                    : "rgba(124, 58, 237, 0.20)"
-                }`,
+                background: "var(--chip-pink-bg)",
+                color: "var(--chip-text)",
               }}
             >
-              <Dna size={10} strokeWidth={2.2} />
+              <Dna size={11} strokeWidth={2.4} />
               Proteína
             </span>
 
             {protein.uniprot_id && (
               <>
                 <span
-                  className="font-mono text-[12.5px]"
-                  style={{ color: labelColor }}
+                  className="font-mono text-[13px] font-semibold"
+                  style={{ color: "var(--text-primary)" }}
                 >
                   UniProt {protein.uniprot_id}
                 </span>
                 <span
-                  className="text-[12.5px]"
-                  style={{ color: isDark ? "#6B7285" : "#A5AEC4" }}
+                  className="text-[13px]"
+                  style={{ color: "var(--text-quaternary)" }}
                 >
                   ·
                 </span>
@@ -168,22 +182,22 @@ export default function ProteinDetailPage() {
             )}
 
             <span
-              className="font-mono text-[12.5px]"
-              style={{ color: labelColor }}
+              className="font-mono text-[13px]"
+              style={{ color: "var(--text-secondary)" }}
             >
               ID #{protein.id}
             </span>
 
             <span
-              className="text-[12.5px]"
-              style={{ color: isDark ? "#6B7285" : "#A5AEC4" }}
+              className="text-[13px]"
+              style={{ color: "var(--text-quaternary)" }}
             >
               ·
             </span>
 
             <span
-              className="text-[12.5px]"
-              style={{ color: labelColor }}
+              className="text-[13px]"
+              style={{ color: "var(--text-secondary)" }}
             >
               Registrada el {protein.created_at}
             </span>
@@ -193,23 +207,21 @@ export default function ProteinDetailPage() {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-[13px] font-medium transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg px-3.5 py-2.5 text-[13px] font-semibold transition-colors"
             style={{
               background: "transparent",
-              color: isDark ? "#C4C9D4" : "#3F4866",
-              border: `1px solid ${
-                isDark ? "rgba(255, 255, 255, 0.10)" : "rgba(14, 19, 48, 0.10)"
-              }`,
+              color: "var(--text-primary)",
+              border: "1px solid var(--border-medium)",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = isDark
-                ? "rgba(255, 255, 255, 0.05)"
-                : "rgba(14, 19, 48, 0.04)";
-              e.currentTarget.style.color = nameColor;
+              e.currentTarget.style.background = "var(--accent-danger-soft)";
+              e.currentTarget.style.color = "var(--accent-danger)";
+              e.currentTarget.style.borderColor = "var(--accent-danger)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = "transparent";
-              e.currentTarget.style.color = isDark ? "#C4C9D4" : "#3F4866";
+              e.currentTarget.style.color = "var(--text-primary)";
+              e.currentTarget.style.borderColor = "var(--border-medium)";
             }}
           >
             <Trash2 size={14} strokeWidth={2.2} />
@@ -218,7 +230,7 @@ export default function ProteinDetailPage() {
 
           <Link
             to="/app/predictions"
-            className="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] font-medium transition-all hover:opacity-95"
+            className="group inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-[13px] font-semibold transition-all hover:opacity-95"
             style={{
               background: "var(--accent)",
               color: "var(--text-on-accent)",
@@ -242,77 +254,25 @@ export default function ProteinDetailPage() {
         transition={{ duration: 0.4, delay: 0.08, ease: SOFT_EASE }}
         className="grid gap-3 sm:grid-cols-3"
       >
-        <div
-          className="rounded-xl px-4 py-3.5"
-          style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
-        >
-          <p
-            className="text-[10.5px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: labelColor }}
-          >
-            Longitud
-          </p>
-          <p
-            className="mt-2 font-mono text-[22px] font-bold tabular-nums leading-none"
-            style={{ color: valueColor }}
-          >
-            {protein.length}
-          </p>
-          <p
-            className="mt-1.5 text-[11.5px]"
-            style={{ color: isDark ? "#7A8494" : "#6B7692" }}
-          >
-            residuos
-          </p>
-        </div>
-
-        <div
-          className="rounded-xl px-4 py-3.5"
-          style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
-        >
-          <p
-            className="text-[10.5px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: labelColor }}
-          >
-            Peso aprox.
-          </p>
-          <p
-            className="mt-2 font-mono text-[22px] font-bold tabular-nums leading-none"
-            style={{ color: valueColor }}
-          >
-            {weight >= 1000 ? `${(weight / 1000).toFixed(1)}k` : weight}
-          </p>
-          <p
-            className="mt-1.5 text-[11.5px]"
-            style={{ color: isDark ? "#7A8494" : "#6B7692" }}
-          >
-            daltons
-          </p>
-        </div>
-
-        <div
-          className="rounded-xl px-4 py-3.5"
-          style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
-        >
-          <p
-            className="text-[10.5px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: labelColor }}
-          >
-            UniProt
-          </p>
-          <p
-            className="mt-2 font-mono text-[16px] font-bold leading-none"
-            style={{ color: valueColor }}
-          >
-            {protein.uniprot_id || "—"}
-          </p>
-          <p
-            className="mt-1.5 text-[11.5px]"
-            style={{ color: isDark ? "#7A8494" : "#6B7692" }}
-          >
-            identificador
-          </p>
-        </div>
+        <StatCard
+          label="Longitud"
+          value={protein.length}
+          note="residuos"
+          dot="var(--chip-pink-bg)"
+        />
+        <StatCard
+          label="Peso aprox."
+          value={weight >= 1000 ? `${(weight / 1000).toFixed(1)}k` : weight}
+          note="daltons"
+          dot="var(--chip-lilac-bg)"
+        />
+        <StatCard
+          label="UniProt"
+          value={protein.uniprot_id || "—"}
+          note="identificador"
+          dot="var(--chip-lime-bg)"
+          mono16
+        />
       </motion.div>
 
       {/* Secuencia */}
@@ -321,17 +281,18 @@ export default function ProteinDetailPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.12, ease: SOFT_EASE }}
         className="rounded-2xl p-6"
-        style={{ background: cardBg, border: `1px solid ${cardBorder}` }}
+        style={cardStyle}
       >
-        <div className="mb-4 flex items-center gap-2">
-          <Hash
-            size={13}
-            strokeWidth={2}
-            style={{ color: labelColor }}
-          />
+        <div className="mb-4 flex items-center gap-2.5">
+          <span
+            className="flex h-6 w-6 items-center justify-center rounded-md"
+            style={{ background: "var(--chip-pink-bg)" }}
+          >
+            <Hash size={13} strokeWidth={2.4} style={{ color: "var(--chip-text)" }} />
+          </span>
           <h2
-            className="text-[11px] font-bold uppercase tracking-[0.14em]"
-            style={{ color: labelColor }}
+            className="text-[11.5px] font-bold uppercase tracking-[0.14em]"
+            style={{ color: "var(--text-secondary)" }}
           >
             Secuencia de aminoácidos
           </h2>
